@@ -4,12 +4,36 @@
   "version": "1.0",
   "description": "Allows github linking to local editor.",
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/code-logo.png"
   },
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*"],
-      "js": ["dist/index.js"]
+      "js": ["./dist/extension/index.js"]
     }
-  ]
+  ],
+  "permissions": [
+    "activeTab",
+    "menus",
+    "clipboardWrite",
+    "storage",
+    "tabs",
+    "http://*/",
+    "https://*/"
+  ],
+
+  "web_accessible_resources": [
+    "icons/code-logo.png",
+    "dist/next/out/_next/**/*"
+  ],
+
+  "background": {
+    "scripts": ["./dist/extension/background.js"]
+  },
+  "browser_action": {
+    "default_icon": "icons/code-logo.png",
+    "default_title": "Github to Code",
+    "default_popup": "dist/next/out/popup.html",
+    "browser_style": true
+  }
 }

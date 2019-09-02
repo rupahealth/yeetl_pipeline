@@ -1,13 +1,20 @@
 {
   "name": "gh-code",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "watch": "tsc -p tsconfig.json -w"
+    "build:all": "yarn build:next && yarn build:ext",
+    "build:ext": "tsc -p src/extension/tsconfig.json",
+    "build:next": "next build src/next && next export src/next --outdir dist/next/out",
+    "watch:ext": "tsc -p src/extension/tsconfig.json -w"
   },
   "devDependencies": {
+    "@types/node": "12.7.3",
+    "@types/react": "16.9.2",
+    "next": "9.0.5",
+    "react-dom": "16.9.0",
+    "react": "16.9.0",
+    "tslint-react": "4.0.0",
     "tslint": "5.19.0",
     "typescript": "3.6.2",
     "web-ext-types": "3.2.1"
