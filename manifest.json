@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Github to Code",
+  "version": "1.0",
+  "description": "Allows github linking to local editor.",
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.github.com/*"],
+      "js": ["dist/index.js"]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "inlineSources": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "target": "es6",
+    "sourceMap": true,
+    "sourceRoot": "/",
+    "outDir": "./dist",
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+  },
+  "exclude": ["dist", "node_modules"]
+}
