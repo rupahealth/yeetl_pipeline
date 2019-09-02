@@ -1,21 +1,21 @@
 import { RepoMap } from "../common/interfaces/repo-map.interface";
 
-browser.menus.create({
-  id: "gh-code-open",
-  contexts: ["all"],
-  title: "Open in Code",
-  icons: { "16": "../icons/code-logo.png" }
-});
-
 browser.menus.onClicked.addListener(({ menuItemId }, tab) => {
   switch (menuItemId) {
-    case "gh-code-open": {
-      return openInCode(tab);
+    case "gh-code-open-repo": {
+      return openRepo(tab);
     }
   }
 });
 
-function openInCode(tab: browser.tabs.Tab) {
+browser.menus.create({
+  id: "gh-code-open-repo",
+  contexts: ["all"],
+  title: "Open this repo in Code",
+  icons: { "16": "../icons/code-logo.png" }
+});
+
+function openRepo(tab: browser.tabs.Tab) {
   browser.browserAction.openPopup();
 
   const map = getOrCreateRepoMap(tab.url);

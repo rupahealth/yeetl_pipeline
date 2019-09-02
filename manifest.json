@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Github to Code",
+  "name": "GitHub to Code",
   "version": "1.0",
   "description": "Allows github linking to local editor.",
   "icons": {
@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*"],
-      "js": ["./dist/extension/index.js"]
+      "js": ["./dist/extension/content.js"]
     }
   ],
   "permissions": [
@@ -26,7 +26,6 @@
     "icons/code-logo.png",
     "dist/next/out/_next/**/*"
   ],
-
   "background": {
     "scripts": ["./dist/extension/background.js"]
   },
