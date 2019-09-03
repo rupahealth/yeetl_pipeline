@@ -1,24 +1,25 @@
-import { Component, Fragment } from "react";
+import { Component, Fragment, ChangeEventHandler } from "react";
 
 interface InputProps {
   label: string;
   type: string;
-  multiple?: boolean;
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 
 export class Input extends Component<InputProps> {
   render() {
-    const { label, type, multiple = false } = this.props;
+    const { label, type, value, onChange } = this.props;
 
     return (
       <Fragment>
         <div className={"input"}>
           <div className={"label"}>{label}</div>
-          <input type={type} multiple={multiple} />
+          <input type={type} value={value} onChange={onChange} />
         </div>
         <style jsx>{`
           .input {
-            margin: 3px;
+            margin: 5px;
           }
 
           input {
@@ -34,6 +35,7 @@ export class Input extends Component<InputProps> {
             padding-top: 6px;
             border-radius: 3px;
           }
+
           .label {
             font-size: 14px;
             color: #bebebe;

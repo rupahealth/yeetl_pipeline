@@ -1,4 +1,4 @@
-import { RepoMap } from "../common/interfaces/repo-map.interface";
+import { Repo } from "../common/interfaces/repo.interface";
 
 browser.menus.onClicked.addListener(({ menuItemId }, tab) => {
   switch (menuItemId) {
@@ -22,7 +22,7 @@ function openRepo(tab: browser.tabs.Tab) {
   console.log(map);
 }
 
-function getOrCreateRepoMap(url: string): RepoMap {
+function getOrCreateRepoMap(url: string): Repo {
   return {
     url,
     localPath: "/Users/maxchehab/projects/gh-code",
