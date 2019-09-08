@@ -10,9 +10,9 @@ interface DataProviderProps {
 
 const DataContext = React.createContext({
   repos: {},
-  updateRepo: (_id: string, _repo: Repo) => null,
+  createRepo: (_repo: Repo) => null,
   deleteRepo: (_id: string) => null,
-  createRepo: (_repo: Repo) => null
+  updateRepo: (_id: string, _repo: Repo) => null
 });
 
 class DataProvider extends Component<DataProviderProps, Data> {
@@ -21,15 +21,15 @@ class DataProvider extends Component<DataProviderProps, Data> {
 
     this.state = {
       repos: {
-        test: {
-          localPath: "local path",
-          name: "the fancy name",
-          url: "this is the url"
+        "workos-inc/workos": {
+          localPath: "/Users/maxchehab/projects/workos",
+          name: "workos-inc/workos",
+          url: "https://github.com/workos-inc/workos"
         },
-        anotherTest: {
-          localPath: "another local path",
-          name: "another the fancy name",
-          url: "another this is the url"
+        "maxchehab/gh-code": {
+          localPath: "/Users/maxchehab/projects/gh-code",
+          name: "maxchehab/gh-code",
+          url: "https://github.com/maxchehab/gh-code"
         }
       }
     };

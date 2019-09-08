@@ -1,28 +1,48 @@
 import { Component, Fragment } from "react";
+import { Pane } from "evergreen-ui";
+import { autoBind } from "react-extras";
 
-import { Card } from "../components/card";
-import { Header } from "../components/header";
 import { DataProvider } from "../components/data-provider";
-import { RepoForm } from "../components/repo-form";
+import { RepoList } from "../components/repo-list";
+import { SearchBar } from "../components/search-bar";
 
-export default class Index extends Component {
+interface IndexState {
+  search: string;
+}
+
+export default class Index extends Component<any, IndexState> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      search: ""
+    };
+
+    autoBind(this);
+  }
+
+  onSearch(search: string) {
+    this.setState({ search });
+  }
+
   render() {
+    const { search } = this.state;
+
     return (
       <Fragment>
         <DataProvider>
-          <Header />
-          <div className={"title"}>
-            <h1>GitHub to Code</h1>
-          </div>
+          <Pane
+            height={400}
+            width={300}
+            display={"flex"}
+            alignItems={"vertical"}
+            flexDirection={"column"}
+          >
+            <SearchBar onSearch={this.onSearch} />
 
-          <RepoForm />
+            <RepoList search={search} />
+          </Pane>
         </DataProvider>
-        <style jsx>{`
-          .title {
-            display: flex;
-            justify-content: center;
-          }
-        `}</style>
       </Fragment>
     );
   }
