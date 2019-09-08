@@ -33,7 +33,7 @@ export default class Index extends Component<any, IndexState> {
         <DataProvider>
           <Pane
             height={400}
-            width={300}
+            width={325}
             display={"flex"}
             alignItems={"vertical"}
             flexDirection={"column"}
