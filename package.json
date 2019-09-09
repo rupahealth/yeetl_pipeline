@@ -6,6 +6,7 @@
     "build:all": "yarn build:next && yarn build:ext",
     "build:ext": "tsc -p src/extension/tsconfig.json",
     "build:next": "next build src/next && next export src/next --outdir dist/next/out",
+    "clean": "rm -rf dist",
     "watch:ext": "tsc -p src/extension/tsconfig.json -w",
     "watch:next": "yarn watch 'yarn build:next' ./src/next"
   },
@@ -23,6 +24,7 @@
     "web-ext-types": "3.2.1"
   },
   "dependencies": {
-    "evergreen-ui": "4.18.3"
+    "evergreen-ui": "4.18.3",
+    "react-onclickout": "2.0.8"
   }
 }

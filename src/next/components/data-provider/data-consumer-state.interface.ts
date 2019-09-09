@@ -5,4 +5,5 @@ export interface DataConsumerState extends Data {
   updateRepo(id: string, repo: Repo): void;
   deleteRepo(id: string): void;
   createRepo(repo: Repo): void;
+  findRepo(id: string): Repo;
 }

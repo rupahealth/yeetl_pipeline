@@ -12,6 +12,7 @@ const DataContext = React.createContext({
   repos: {},
   createRepo: (_repo: Repo) => null,
   deleteRepo: (_id: string) => null,
+  findRepo: (_id: string) => null,
   updateRepo: (_id: string, _repo: Repo) => null
 });
 
@@ -49,6 +50,16 @@ class DataProvider extends Component<DataProviderProps, Data> {
     this.setState({ repos });
   }
 
+  findRepo(id: string): Repo {
+    const { repos } = this.state;
+
+    if (!id) {
+      return null;
+    }
+
+    return repos[id];
+  }
+
   deleteRepo(id: string) {
     const repos = Object.assign(this.state.repos, {});
     const { name } = repos[id];
@@ -71,7 +82,8 @@ class DataProvider extends Component<DataProviderProps, Data> {
           repos,
           createRepo: this.createRepo,
           deleteRepo: this.deleteRepo,
-          updateRepo: this.updateRepo
+          updateRepo: this.updateRepo,
+          findRepo: this.findRepo
         }}
       >
         {children}

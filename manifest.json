@@ -32,7 +32,7 @@
   "browser_action": {
     "default_icon": "icons/code-logo.png",
     "default_title": "Github to Code",
-    "default_popup": "dist/next/out/popup.html",
+    "default_popup": "dist/next/out/index.html",
     "browser_style": true
   }
 }

@@ -1,7 +1,6 @@
 import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
 import { SearchInput, Pane, Button, minorScale } from "evergreen-ui";
-import { NewRepoIcon } from "../new-repo-icon";
 
 interface SearchBarProps {
   onSearch(value: string): void;
@@ -21,6 +20,12 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
 
     autoBind(this);
   }
+
+  componentDidMount() {
+    this.input.focus && this.input.focus();
+  }
+
+  input: HTMLInputElement;
 
   updateValue(value: string) {
     const { onSearch } = this.props;
@@ -44,6 +49,9 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
           justifyContent={"space-between"}
         >
           <SearchInput
+            innerRef={(ref: HTMLInputElement) => {
+              this.input = ref;
+            }}
             height={32}
             onChange={(e: any) => this.updateValue(e.target.value)}
             placeholder={"Search repositories"}
@@ -55,7 +63,7 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
           <Button
             appearance={"primary"}
             intent={"success"}
-            iconBefore={<NewRepoIcon />}
+            iconBefore={"git-repo"}
             marginLeft={minorScale(3)}
           >
             New

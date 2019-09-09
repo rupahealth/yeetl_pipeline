@@ -1,1 +1,2 @@
-export { RepoRow } from "./repo-row";
+import RepoRow from "./repo-row";
+export { RepoRow };

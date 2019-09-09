@@ -1,15 +1,15 @@
-import { Component, Fragment } from "react";
+import { Component } from "react";
 import { autoBind } from "react-extras";
 import { Button, Table, Pane } from "evergreen-ui";
 
 import { Repo } from "../../../common/interfaces/repo.interface";
-import { GitHubIcon } from "../github-icon";
-
+import { withRouter, SingletonRouter } from "next/router";
 interface RepoRowProps {
   repo: Repo;
+  router: SingletonRouter;
 }
 
-export class RepoRow extends Component<RepoRowProps> {
+class RepoRow extends Component<RepoRowProps> {
   constructor(props: RepoRowProps) {
     super(props);
 
@@ -23,13 +23,22 @@ export class RepoRow extends Component<RepoRowProps> {
     window.location.href = `vscode://file${localPath}`;
   }
 
+  editRepo() {
+    const {
+      router,
+      repo: { name }
+    } = this.props;
+
+    router.push(`/details?name=${name}`);
+  }
+
   render() {
     const {
       repo: { name }
     } = this.props;
 
     return (
-      <Table.Row key={name} isSelectable onSelect={() => null} intent={name}>
+      <Table.Row key={name} isSelectable onSelect={this.editRepo} intent={name}>
         <Table.TextCell>
           <Pane
             width={"100%"}
@@ -47,3 +56,5 @@ export class RepoRow extends Component<RepoRowProps> {
     );
   }
 }
+
+export default withRouter(RepoRow);
