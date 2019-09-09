@@ -1,5 +1,5 @@
 import { Component, Fragment } from "react";
-import { Pane, Button, minorScale } from "evergreen-ui";
+import { Pane } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
 import { DataProvider, DataConsumer } from "../components/data-provider";
