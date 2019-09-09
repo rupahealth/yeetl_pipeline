@@ -43,14 +43,14 @@ class Details extends Component<DetailsProps> {
                   hint={"Edit the local path"}
                   field={"localPath"}
                   label={"Local Path:"}
-                  placeholder={"Repositories local path"}
+                  placeholder={"Repository's local path"}
                 />
                 <EditableField
                   repo={repo}
                   field={"url"}
                   label={"GitHub URL:"}
                   hint={"Edit the GitHub URL"}
-                  placeholder={"Repositories GitHub URL"}
+                  placeholder={"Repository's GitHub URL"}
                 />
 
                 <DeleteRepoButton repo={repo} />
