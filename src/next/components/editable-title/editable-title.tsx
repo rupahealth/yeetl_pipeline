@@ -63,8 +63,6 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
       <Pane
         marginBottom={16}
         marginTop={16}
-        paddingLeft={16}
-        paddingRight={16}
         width={"100%"}
         display={"flex"}
         alignItems={"center"}
@@ -106,8 +104,9 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
                 {value}
               </Heading>
             </div>
-            <Tooltip content="Edit name">
+            <Tooltip content="Edit the name">
               <IconButton
+                height={24}
                 onClick={() =>
                   this.setState({ editing: true }, () => this.focus())
                 }

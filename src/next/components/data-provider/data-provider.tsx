@@ -62,12 +62,8 @@ class DataProvider extends Component<DataProviderProps, Data> {
 
   deleteRepo(id: string) {
     const repos = Object.assign(this.state.repos, {});
-    const { name } = repos[id];
-    const message = `⚠️ Are you sure you want to delete all data for the repo '${name}'?`;
 
-    if (confirm(message)) {
-      delete repos[id];
-    }
+    delete repos[id];
 
     this.setState({ repos });
   }

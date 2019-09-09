@@ -1,11 +1,12 @@
 import { Component, Fragment } from "react";
-import { Pane } from "evergreen-ui";
+import { Pane, Button, minorScale } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
 import { DataProvider, DataConsumer } from "../components/data-provider";
 import { DataConsumerState } from "../components/data-provider/data-consumer-state.interface";
 import { EditableTitle } from "../components/editable-title";
 import { EditableField } from "../components/editable-field";
+import { DeleteRepoButton } from "../components/delete-repo-button";
 
 interface DetailsProps {
   router: SingletonRouter;
@@ -27,25 +28,32 @@ class Details extends Component<DetailsProps> {
 
             return (
               <Pane
+                border={"1px solid red"}
                 height={400}
                 width={325}
                 display={"flex"}
                 alignItems={"vertical"}
                 flexDirection={"column"}
+                paddingLeft={16}
+                paddingRight={16}
               >
                 <EditableTitle repo={repo} />
                 <EditableField
                   repo={repo}
                   hint={"Edit the local path"}
                   field={"localPath"}
+                  label={"Local Path:"}
                   placeholder={"Repositories local path"}
                 />
                 <EditableField
                   repo={repo}
                   field={"url"}
+                  label={"GitHub URL:"}
                   hint={"Edit the GitHub URL"}
                   placeholder={"Repositories GitHub URL"}
                 />
+
+                <DeleteRepoButton repo={repo} />
               </Pane>
             );
           }}
