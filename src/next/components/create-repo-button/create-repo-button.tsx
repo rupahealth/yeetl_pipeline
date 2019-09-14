@@ -9,6 +9,9 @@ import { withData } from "../../hocs/with-data";
 interface CreateRepoButtonProps {
   createRepo(repo: Partial<Repo>): Promise<Repo>;
   router: SingletonRouter;
+  value?: string;
+  hasIcon?: boolean;
+  defaultName?: string;
 }
 
 interface CreateRepoButtonState {
@@ -64,6 +67,7 @@ class CreateRepoButton extends Component<
   }
 
   render() {
+    const { value = "New", hasIcon = true, defaultName = null } = this.props;
     const { showPrompt, name, localPath, url } = this.state;
     const isConfirmDisabled = empty(name) || empty(localPath) || empty(url);
 
@@ -79,6 +83,7 @@ class CreateRepoButton extends Component<
           title={"Create Repository"}
         >
           <TextInputField
+            autoFocus={true}
             isInvalid={isInvalid(name)}
             onChange={(e: any) => this.setState({ name: e.target.value })}
             placeholder={"Repository's name"}
@@ -111,14 +116,14 @@ class CreateRepoButton extends Component<
 
         <Button
           appearance={"primary"}
-          iconBefore={"git-repo"}
+          iconBefore={hasIcon ? "git-repo" : undefined}
           intent={"success"}
           marginLeft={minorScale(3)}
           onClick={() => {
-            this.setState({ showPrompt: true });
+            this.setState({ showPrompt: true, name: defaultName });
           }}
         >
-          New
+          {value}
         </Button>
       </Fragment>
     );

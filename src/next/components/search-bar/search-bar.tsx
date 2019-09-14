@@ -1,43 +1,23 @@
 import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
-import { SearchInput, Pane, Button, minorScale } from "evergreen-ui";
+import { SearchInput, Pane } from "evergreen-ui";
 import { CreateRepoButton } from "../create-repo-button";
 
 interface SearchBarProps {
   onSearch(value: string): void;
-}
-
-interface SearchBarState {
+  innerRef(ref: HTMLInputElement): void;
   value: string;
 }
 
-export class SearchBar extends Component<SearchBarProps, SearchBarState> {
+export class SearchBar extends Component<SearchBarProps> {
   constructor(props: SearchBarProps) {
     super(props);
-
-    this.state = {
-      value: ""
-    };
 
     autoBind(this);
   }
 
-  componentDidMount() {
-    this.input.focus && this.input.focus();
-  }
-
-  input: HTMLInputElement;
-
-  updateValue(value: string) {
-    const { onSearch } = this.props;
-
-    this.setState({ value }, () => onSearch(value));
-  }
-
-  createNew() {}
-
   render() {
-    const { value } = this.state;
+    const { value, onSearch, innerRef } = this.props;
 
     return (
       <Fragment>
@@ -52,11 +32,10 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
           justifyContent={"space-between"}
         >
           <SearchInput
-            innerRef={(ref: HTMLInputElement) => {
-              this.input = ref;
-            }}
+            autoFocus={true}
+            innerRef={innerRef}
             height={32}
-            onChange={(e: any) => this.updateValue(e.target.value)}
+            onChange={(e: any) => onSearch(e.target.value)}
             placeholder={"Search repositories"}
             spellCheck={false}
             value={value}

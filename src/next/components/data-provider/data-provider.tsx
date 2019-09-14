@@ -14,7 +14,8 @@ const DataContext = React.createContext({
   createRepo: async (_repo: Partial<Repo>) => null,
   deleteRepo: (_repo: Repo) => null,
   findRepo: (_id: string) => null,
-  updateRepo: (_repo: Repo) => null
+  updateRepo: (_repo: Repo) => null,
+  loaded: false
 });
 
 class DataProvider extends Component<DataProviderProps, Data> {
@@ -24,7 +25,8 @@ class DataProvider extends Component<DataProviderProps, Data> {
     autoBind(this);
 
     this.state = {
-      repos: {}
+      repos: {},
+      loaded: false
     };
   }
 
@@ -34,14 +36,16 @@ class DataProvider extends Component<DataProviderProps, Data> {
     };
 
     if (!data) {
-      return await browser.storage.local.set({
+      await browser.storage.local.set({
         data: {
           repos: {}
         }
       });
+
+      return this.setState({ loaded: true });
     }
 
-    this.setState(data);
+    this.setState({ ...data, loaded: true });
   }
 
   updateRepo(repo: Repo) {
@@ -92,7 +96,7 @@ class DataProvider extends Component<DataProviderProps, Data> {
 
   render() {
     const { children } = this.props;
-    const { repos } = this.state;
+    const { repos, loaded } = this.state;
 
     return (
       <DataContext.Provider
@@ -101,7 +105,8 @@ class DataProvider extends Component<DataProviderProps, Data> {
           createRepo: this.createRepo,
           deleteRepo: this.deleteRepo,
           updateRepo: this.updateRepo,
-          findRepo: this.findRepo
+          findRepo: this.findRepo,
+          loaded
         }}
       >
         {children}

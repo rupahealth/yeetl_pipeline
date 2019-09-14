@@ -21,8 +21,18 @@ export default class Index extends Component<any, IndexState> {
     autoBind(this);
   }
 
+  searchInput: HTMLInputElement;
+
   onSearch(search: string) {
     this.setState({ search });
+  }
+
+  clearSearch() {
+    this.onSearch("");
+
+    if (this.searchInput) {
+      this.searchInput.focus();
+    }
   }
 
   render() {
@@ -38,9 +48,13 @@ export default class Index extends Component<any, IndexState> {
             alignItems={"vertical"}
             flexDirection={"column"}
           >
-            <SearchBar onSearch={this.onSearch} />
+            <SearchBar
+              innerRef={(ref: HTMLInputElement) => (this.searchInput = ref)}
+              onSearch={this.onSearch}
+              value={search}
+            />
 
-            <RepoList search={search} />
+            <RepoList search={search} clearSearch={this.clearSearch} />
           </Pane>
         </DataProvider>
       </Fragment>
