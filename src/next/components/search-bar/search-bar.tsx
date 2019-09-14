@@ -1,6 +1,7 @@
 import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
 import { SearchInput, Pane, Button, minorScale } from "evergreen-ui";
+import { CreateRepoButton } from "../create-repo-button";
 
 interface SearchBarProps {
   onSearch(value: string): void;
@@ -33,6 +34,8 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
     this.setState({ value }, () => onSearch(value));
   }
 
+  createNew() {}
+
   render() {
     const { value } = this.state;
 
@@ -60,14 +63,7 @@ export class SearchBar extends Component<SearchBarProps, SearchBarState> {
             width={"100%"}
           />
 
-          <Button
-            appearance={"primary"}
-            intent={"success"}
-            iconBefore={"git-repo"}
-            marginLeft={minorScale(3)}
-          >
-            New
-          </Button>
+          <CreateRepoButton />
         </Pane>
       </Fragment>
     );

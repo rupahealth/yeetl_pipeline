@@ -11,8 +11,8 @@ interface DataProviderProps {
 
 const DataContext = React.createContext({
   repos: {},
-  createRepo: (_repo: Repo) => null,
-  deleteRepo: (repo: Repo) => null,
+  createRepo: async (_repo: Partial<Repo>) => null,
+  deleteRepo: (_repo: Repo) => null,
   findRepo: (_id: string) => null,
   updateRepo: (_repo: Repo) => null
 });
@@ -29,21 +29,6 @@ class DataProvider extends Component<DataProviderProps, Data> {
   }
 
   async componentDidMount() {
-    // const id = ulid();
-
-    // await browser.storage.local.set({
-    //   data: {
-    //     repos: {
-    //       [id]: {
-    //         id,
-    //         name: "maxchehab/gh-code",
-    //         localPath: "/Users/maxchehab/projects/gh-code",
-    //         url: "https://github.com/maxchehab/gh-code"
-    //       }
-    //     }
-    //   }
-    // });
-
     const { data } = ((await browser.storage.local.get("data")) as unknown) as {
       data: Data;
     };
@@ -68,15 +53,20 @@ class DataProvider extends Component<DataProviderProps, Data> {
     browser.storage.local.set({ data });
   }
 
-  createRepo(repo: Repo) {
+  async createRepo(repo: Partial<Repo>): Promise<Repo> {
+    const id = ulid();
+    repo.id = id;
+
     const repos = Object.assign(this.state.repos, {
-      [ulid()]: repo
+      [id]: repo
     });
 
     this.setState({ repos });
 
     const data = { repos } as any;
-    browser.storage.local.set({ data });
+    await browser.storage.local.set({ data });
+
+    return repo as Repo;
   }
 
   findRepo(id: string): Repo {

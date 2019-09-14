@@ -23,8 +23,7 @@ class Details extends Component<DetailsProps> {
             const repo = findRepo(id as string);
 
             if (!repo) {
-              // return <Fragment />;
-              return <div>no repo {id}</div>;
+              return <Fragment />;
             }
 
             return (
