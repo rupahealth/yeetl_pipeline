@@ -45,13 +45,6 @@ class Details extends Component<DetailsProps> {
                   label={"Local Path:"}
                   placeholder={"Repository's local path"}
                 />
-                <EditableField
-                  repo={repo}
-                  field={"url"}
-                  label={"GitHub URL:"}
-                  hint={"Edit the GitHub URL"}
-                  placeholder={"Repository's GitHub URL"}
-                />
 
                 <DeleteRepoButton repo={repo} />
               </Pane>

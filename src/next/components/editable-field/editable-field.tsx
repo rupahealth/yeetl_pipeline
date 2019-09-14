@@ -16,7 +16,7 @@ import { Repo } from "../../../common/interfaces/repo.interface";
 import { Data } from "../data-provider/data.interface";
 
 interface EditableTitleProps extends Data {
-  field: "localPath" | "url";
+  field: "localPath";
   hint: string;
   label: string;
   placeholder: string;

@@ -17,7 +17,6 @@ interface CreateRepoButtonProps {
 interface CreateRepoButtonState {
   showPrompt: boolean;
   name: string;
-  url: string;
   localPath: string;
 }
 
@@ -44,16 +43,15 @@ class CreateRepoButton extends Component<
     this.state = {
       showPrompt: false,
       name: null,
-      url: null,
       localPath: null
     };
   }
 
   async createRepo() {
     const { createRepo, router } = this.props;
-    const { name, url, localPath } = this.state;
+    const { name, localPath } = this.state;
 
-    const { id } = await createRepo({ name, url, localPath });
+    const { id } = await createRepo({ name, localPath });
     router.push(`/details?id=${id}`);
   }
 
@@ -61,15 +59,14 @@ class CreateRepoButton extends Component<
     this.setState({
       showPrompt: false,
       name: null,
-      url: null,
       localPath: null
     });
   }
 
   render() {
     const { value = "New", hasIcon = true, defaultName = null } = this.props;
-    const { showPrompt, name, localPath, url } = this.state;
-    const isConfirmDisabled = empty(name) || empty(localPath) || empty(url);
+    const { showPrompt, name, localPath } = this.state;
+    const isConfirmDisabled = empty(name) || empty(localPath);
 
     return (
       <Fragment>
@@ -85,8 +82,10 @@ class CreateRepoButton extends Component<
           <TextInputField
             autoFocus={true}
             isInvalid={isInvalid(name)}
+            label={"Name"}
             onChange={(e: any) => this.setState({ name: e.target.value })}
-            placeholder={"Repository's name"}
+            placeholder={"github/electron"}
+            required={true}
             value={name}
             validationMessage={
               isInvalid(name) ? "This field is required" : undefined
@@ -95,21 +94,13 @@ class CreateRepoButton extends Component<
 
           <TextInputField
             isInvalid={isInvalid(localPath)}
+            label={"Local path"}
             onChange={(e: any) => this.setState({ localPath: e.target.value })}
-            placeholder={"Repository's local path"}
+            placeholder={"/home/projects/electron"}
+            required={true}
             value={localPath}
             validationMessage={
               isInvalid(localPath) ? "This field is required" : undefined
-            }
-          />
-
-          <TextInputField
-            isInvalid={isInvalid(url)}
-            onChange={(e: any) => this.setState({ url: e.target.value })}
-            placeholder={"Repository's GitHub URL"}
-            value={url}
-            validationMessage={
-              isInvalid(url) ? "This field is required" : undefined
             }
           />
         </Dialog>

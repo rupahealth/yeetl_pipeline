@@ -34,7 +34,6 @@ class RepoList extends Component<RepoListProps> {
     const filteredRepos = this.filterRepos();
     const repos = filteredRepos.map(repo => <RepoRow repo={repo} />);
 
-    console.log(loaded);
     return (
       <Choose>
         <Choose.When condition={repos.length > 0 || !loaded}>
