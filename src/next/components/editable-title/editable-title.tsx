@@ -18,7 +18,7 @@ import { Data } from "../data-provider/data.interface";
 interface EditableTitleProps extends Data {
   repo: Repo;
   router: SingletonRouter;
-  updateRepo(id: string, repo: Repo): void;
+  updateRepo(repo: Repo): void;
 }
 
 interface EditableTitleState {
@@ -45,7 +45,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
     const { repo, updateRepo } = this.props;
 
     repo.name = value;
-    updateRepo(repo.name, repo);
+    updateRepo(repo);
   }
 
   navigateHome() {

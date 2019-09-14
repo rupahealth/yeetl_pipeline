@@ -7,7 +7,7 @@ import { Repo } from "../../../common/interfaces/repo.interface";
 import { SingletonRouter, withRouter } from "next/router";
 
 interface DeleteRepoButtonProps {
-  deleteRepo(id: string): void;
+  deleteRepo(repo: Repo): void;
   repo: Repo;
   router: SingletonRouter;
 }
@@ -32,7 +32,7 @@ class DeleteRepoButton extends Component<
   deleteRepo() {
     const { deleteRepo, repo, router } = this.props;
     this.setState({ showPrompt: true }, () => {
-      deleteRepo(repo.name);
+      deleteRepo(repo);
       router.push("/");
     });
   }

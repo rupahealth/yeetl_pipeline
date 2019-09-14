@@ -14,16 +14,17 @@ interface DetailsProps {
 class Details extends Component<DetailsProps> {
   render() {
     const { router } = this.props;
-    const { name: repoName } = router.query;
+    const { id } = router.query;
 
     return (
       <DataProvider>
         <DataConsumer>
           {({ findRepo }: DataConsumerState) => {
-            const repo = findRepo(repoName as string);
+            const repo = findRepo(id as string);
 
             if (!repo) {
-              return <Fragment />;
+              // return <Fragment />;
+              return <div>no repo {id}</div>;
             }
 
             return (

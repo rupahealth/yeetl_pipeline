@@ -23,7 +23,7 @@ interface EditableTitleProps extends Data {
   repo: Repo;
   router: SingletonRouter;
   size: number;
-  updateRepo(id: string, repo: Repo): void;
+  updateRepo(repo: Repo): void;
 }
 
 interface EditableTitleState {
@@ -46,7 +46,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
     const { repo, updateRepo, field } = this.props;
 
     repo[field] = value;
-    updateRepo(repo.name, repo);
+    updateRepo(repo);
   }
 
   navigateHome() {

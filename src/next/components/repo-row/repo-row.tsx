@@ -24,12 +24,9 @@ class RepoRow extends Component<RepoRowProps> {
   }
 
   editRepo() {
-    const {
-      router,
-      repo: { name }
-    } = this.props;
+    const { router, repo } = this.props;
 
-    router.push(`/details?name=${name}`);
+    router.push(`/details?id=${repo.id}`);
   }
 
   render() {

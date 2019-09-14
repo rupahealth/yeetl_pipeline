@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { autoBind } from "react-extras";
+import { ulid } from "ulid";
 
 import { Data } from "./data.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
@@ -11,43 +12,71 @@ interface DataProviderProps {
 const DataContext = React.createContext({
   repos: {},
   createRepo: (_repo: Repo) => null,
-  deleteRepo: (_id: string) => null,
+  deleteRepo: (repo: Repo) => null,
   findRepo: (_id: string) => null,
-  updateRepo: (_id: string, _repo: Repo) => null
+  updateRepo: (_repo: Repo) => null
 });
 
 class DataProvider extends Component<DataProviderProps, Data> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      repos: {
-        "workos-inc/workos": {
-          localPath: "/Users/maxchehab/projects/workos",
-          name: "workos-inc/workos",
-          url: "https://github.com/workos-inc/workos"
-        },
-        "maxchehab/gh-code": {
-          localPath: "/Users/maxchehab/projects/gh-code",
-          name: "maxchehab/gh-code",
-          url: "https://github.com/maxchehab/gh-code"
-        }
-      }
-    };
-
     autoBind(this);
+
+    this.state = {
+      repos: {}
+    };
   }
 
-  updateRepo(id: string, repo: Repo) {
-    const repos = Object.assign(this.state.repos, { [id]: repo });
+  async componentDidMount() {
+    // const id = ulid();
+
+    // await browser.storage.local.set({
+    //   data: {
+    //     repos: {
+    //       [id]: {
+    //         id,
+    //         name: "maxchehab/gh-code",
+    //         localPath: "/Users/maxchehab/projects/gh-code",
+    //         url: "https://github.com/maxchehab/gh-code"
+    //       }
+    //     }
+    //   }
+    // });
+
+    const { data } = ((await browser.storage.local.get("data")) as unknown) as {
+      data: Data;
+    };
+
+    if (!data) {
+      return await browser.storage.local.set({
+        data: {
+          repos: {}
+        }
+      });
+    }
+
+    this.setState(data);
+  }
+
+  updateRepo(repo: Repo) {
+    const repos = Object.assign(this.state.repos, { [repo.id]: repo });
+
     this.setState({ repos });
+
+    const data = { repos } as any;
+    browser.storage.local.set({ data });
   }
 
   createRepo(repo: Repo) {
     const repos = Object.assign(this.state.repos, {
-      [new Date().getTime().toString()]: repo
+      [ulid()]: repo
     });
+
     this.setState({ repos });
+
+    const data = { repos } as any;
+    browser.storage.local.set({ data });
   }
 
   findRepo(id: string): Repo {
@@ -60,12 +89,15 @@ class DataProvider extends Component<DataProviderProps, Data> {
     return repos[id];
   }
 
-  deleteRepo(id: string) {
+  deleteRepo({ id }: Repo) {
     const repos = Object.assign(this.state.repos, {});
 
     delete repos[id];
 
     this.setState({ repos });
+
+    const data = { repos } as any;
+    browser.storage.local.set({ data });
   }
 
   render() {
