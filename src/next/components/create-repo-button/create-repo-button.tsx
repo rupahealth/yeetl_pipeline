@@ -54,6 +54,15 @@ class CreateRepoButton extends Component<
     router.push(`/details?id=${id}`);
   }
 
+  close() {
+    this.setState({
+      showPrompt: false,
+      name: null,
+      url: null,
+      localPath: null
+    });
+  }
+
   render() {
     const { showPrompt, name, localPath, url } = this.state;
     const isConfirmDisabled = empty(name) || empty(localPath) || empty(url);
@@ -65,7 +74,7 @@ class CreateRepoButton extends Component<
           intent={"success"}
           isConfirmDisabled={isConfirmDisabled}
           isShown={showPrompt}
-          onCloseComplete={() => this.setState({ showPrompt: false })}
+          onCancel={this.close}
           onConfirm={this.createRepo}
           title={"Create Repository"}
         >
