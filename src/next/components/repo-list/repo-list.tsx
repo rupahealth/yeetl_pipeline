@@ -61,7 +61,7 @@ class RepoList extends Component<RepoListProps> {
                   textAlign={"center"}
                   size={400}
                 >
-                  Uh-oh, we couldn't find any repositories with that search.
+                  Uh-oh, we couldn't find any repositories with that query.
                 </Heading>
                 <Pane
                   alignItems={"center"}
@@ -69,7 +69,7 @@ class RepoList extends Component<RepoListProps> {
                   justifyContent={"space-between"}
                   marginTop={minorScale(3)}
                 >
-                  <Button onClick={clearSearch}>Clear search</Button>
+                  <Button onClick={clearSearch}>Clear query</Button>
                   <CreateRepoButton
                     defaultName={search}
                     value={"Create repository"}
