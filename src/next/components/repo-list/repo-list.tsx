@@ -30,7 +30,7 @@ class RepoList extends Component<RepoListProps> {
   }
 
   render() {
-    const { search, clearSearch, loaded } = this.props;
+    const { search, clearSearch, loaded, repos: allRepos } = this.props;
     const filteredRepos = this.filterRepos();
     const repos = filteredRepos.map(repo => <RepoRow repo={repo} />);
 
@@ -53,22 +53,52 @@ class RepoList extends Component<RepoListProps> {
             width={"100%"}
           >
             <SearchingIcon size={75} />
-            <Heading marginTop={minorScale(3)} textAlign={"center"} size={400}>
-              Oh-oh, we couldn't find any repositories with that search.
-            </Heading>
-            <Pane
-              alignItems={"center"}
-              display={"flex"}
-              justifyContent={"space-between"}
-              marginTop={minorScale(3)}
-            >
-              <Button onClick={clearSearch}>Clear search</Button>
-              <CreateRepoButton
-                defaultName={search}
-                value={"Create repository"}
-                hasIcon={false}
-              />
-            </Pane>
+            <Choose>
+              <Choose.When condition={Object.entries(allRepos).length > 0}>
+                <Heading
+                  marginTop={minorScale(3)}
+                  textAlign={"center"}
+                  size={400}
+                >
+                  Oh-oh, we couldn't find any repositories with that search.
+                </Heading>
+                <Pane
+                  alignItems={"center"}
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  marginTop={minorScale(3)}
+                >
+                  <Button onClick={clearSearch}>Clear search</Button>
+                  <CreateRepoButton
+                    defaultName={search}
+                    value={"Create repository"}
+                    hasIcon={false}
+                  />
+                </Pane>
+              </Choose.When>
+              <Choose.Otherwise>
+                <Heading
+                  marginTop={minorScale(3)}
+                  textAlign={"center"}
+                  size={400}
+                >
+                  It looks like you don't have any repositories configured.
+                </Heading>
+
+                <Pane
+                  alignItems={"center"}
+                  display={"flex"}
+                  justifyContent={"center"}
+                  marginTop={minorScale(3)}
+                >
+                  <CreateRepoButton
+                    defaultName={search}
+                    value={"Create repository"}
+                    hasIcon={false}
+                  />
+                </Pane>
+              </Choose.Otherwise>
+            </Choose>
           </Pane>
         </Choose.Otherwise>
       </Choose>
