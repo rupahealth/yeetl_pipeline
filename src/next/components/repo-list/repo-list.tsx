@@ -61,7 +61,7 @@ class RepoList extends Component<RepoListProps> {
                   textAlign={"center"}
                   size={400}
                 >
-                  Oh-oh, we couldn't find any repositories with that search.
+                  Uh-oh, we couldn't find any repositories with that search.
                 </Heading>
                 <Pane
                   alignItems={"center"}
