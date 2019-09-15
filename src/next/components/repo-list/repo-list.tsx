@@ -93,7 +93,6 @@ class RepoList extends Component<RepoListProps> {
                   marginTop={minorScale(3)}
                 >
                   <CreateRepoButton
-                    defaultName={search}
                     value={"Create repository"}
                     hasIcon={false}
                   />
