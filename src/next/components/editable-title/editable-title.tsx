@@ -106,7 +106,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
                   }}
                   height={32}
                   onChange={(e: any) => this.updateName(e.target.value)}
-                  placeholder={"github/electron"}
+                  placeholder={"maxchehab/gh-code"}
                   spellCheck={false}
                   value={value}
                   width={"100%"}

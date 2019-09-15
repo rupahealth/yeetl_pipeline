@@ -102,7 +102,7 @@ class CreateRepoButton extends Component<
             isInvalid={isInvalid(name)}
             label={"Name"}
             onChange={(e: any) => this.setState({ name: e.target.value })}
-            placeholder={"github/electron"}
+            placeholder={"maxchehab/gh-code"}
             required={true}
             value={name}
             validationMessage={
@@ -114,7 +114,7 @@ class CreateRepoButton extends Component<
             isInvalid={isInvalid(localPath)}
             label={"Local path"}
             onChange={(e: any) => this.setState({ localPath: e.target.value })}
-            placeholder={"/home/projects/electron"}
+            placeholder={"/home/projects/gh-code"}
             required={true}
             value={localPath}
             validationMessage={

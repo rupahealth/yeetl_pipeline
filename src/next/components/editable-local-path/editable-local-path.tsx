@@ -119,7 +119,7 @@ class EditableLocalPath extends Component<
                     }}
                     height={32}
                     onChange={(e: any) => this.updateName(e.target.value)}
-                    placeholder={"/home/projects/electron"}
+                    placeholder={"/home/projects/gh-code"}
                     spellCheck={false}
                     value={value}
                     flex={1}
