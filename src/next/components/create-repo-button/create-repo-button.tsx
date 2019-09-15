@@ -95,6 +95,7 @@ class CreateRepoButton extends Component<
           onCancel={this.close}
           onConfirm={this.createRepo}
           title={"Create Repository"}
+          onCloseComplete={this.close}
         >
           <TextInputField
             autoFocus={true}
