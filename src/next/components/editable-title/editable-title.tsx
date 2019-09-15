@@ -69,50 +69,63 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
         marginBottom={16}
         marginTop={16}
         width={"100%"}
-        display={"flex"}
+        display={"inline-flex"}
         alignItems={"center"}
         justifyContent={"space-between"}
       >
         <Tooltip content="Back to Repositories">
-          <IconButton onClick={this.navigateHome} icon="arrow-left" />
+          <IconButton
+            flexShrink={0}
+            onClick={this.navigateHome}
+            icon="arrow-left"
+          />
         </Tooltip>
         <Choose>
           <Choose.When condition={editing}>
             <ClickOutHandler
               onClickOut={() => this.setState({ editing: false })}
             >
-              <form onSubmit={this.onSubmit}>
+              <form
+                onSubmit={this.onSubmit}
+                style={{
+                  display: "flex-inline",
+                  marginLeft: minorScale(3),
+                  flex: 1
+                }}
+              >
                 <TextInput
                   innerRef={(ref: HTMLInputElement) => {
                     this.input = ref;
                   }}
                   height={32}
-                  marginLeft={minorScale(3)}
                   onChange={(e: any) => this.updateName(e.target.value)}
                   placeholder={"github/electron"}
                   spellCheck={false}
                   value={value}
-                  flex={1}
+                  width={"100%"}
                 />
               </form>
             </ClickOutHandler>
           </Choose.When>
           <Choose.Otherwise>
-            <div
+            <Heading
+              marginLeft={minorScale(3)}
               onClick={() =>
                 this.setState({ editing: true }, () => this.focus())
               }
+              cursor={"pointer"}
+              textDecoration={"underline"}
+              size={600}
+              overflow={"hidden"}
+              textOverflow={"ellipsis"}
+              flexGrow={1}
             >
-              <Heading
-                cursor={"pointer"}
-                textDecoration={"underline"}
-                size={600}
-              >
-                {value}
-              </Heading>
-            </div>
+              {value}
+            </Heading>
             <Tooltip content="Edit the name">
               <IconButton
+                flexShrink={0}
+                marginLeft={minorScale(3)}
                 height={24}
                 onClick={() =>
                   this.setState({ editing: true }, () => this.focus())

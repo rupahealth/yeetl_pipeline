@@ -1,9 +1,9 @@
 import { Component } from "react";
 import { autoBind } from "react-extras";
-import { Button, Table, Pane } from "evergreen-ui";
+import { Button, Table, Pane, Paragraph, minorScale } from "evergreen-ui";
+import { withRouter, SingletonRouter } from "next/router";
 
 import { Repo } from "../../../common/interfaces/repo.interface";
-import { withRouter, SingletonRouter } from "next/router";
 interface RepoRowProps {
   repo: Repo;
   router: SingletonRouter;
@@ -43,8 +43,20 @@ class RepoRow extends Component<RepoRowProps> {
             alignItems={"center"}
             justifyContent={"space-between"}
           >
-            {name}
-            <Button height={24} onClick={this.openInCode}>
+            <Paragraph
+              overflow={"hidden"}
+              textOverflow={"ellipsis"}
+              flexGrow={1}
+              size={300}
+            >
+              {name}
+            </Paragraph>
+            <Button
+              flexShrink={0}
+              height={24}
+              marginLeft={minorScale(3)}
+              onClick={this.openInCode}
+            >
               Open in Code
             </Button>
           </Pane>

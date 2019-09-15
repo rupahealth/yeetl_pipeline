@@ -37,12 +37,13 @@ class RepoList extends Component<RepoListProps> {
     return (
       <Choose>
         <Choose.When condition={repos.length > 0 || !loaded}>
-          <Pane width={"100%"} height={"100%"}>
+          <Pane flexGrow={1} overflow={"auto"}>
             {repos}
           </Pane>
         </Choose.When>
         <Choose.Otherwise>
           <Pane
+            tint={"red"}
             alignItems={"center"}
             display={"flex"}
             flexDirection={"column"}

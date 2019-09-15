@@ -1,13 +1,14 @@
 import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
-import { Pane, Button, minorScale } from "evergreen-ui";
+import { Button, minorScale, Pane } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
-import { DataProvider, DataConsumer } from "../components/data-provider";
+import { DataConsumer } from "../components/data-provider";
 import { DataConsumerState } from "../components/data-provider/data-consumer-state.interface";
-import { EditableTitle } from "../components/editable-title";
-import { EditableField } from "../components/editable-field";
 import { DeleteRepoButton } from "../components/delete-repo-button";
+import { EditableField } from "../components/editable-field";
+import { EditableTitle } from "../components/editable-title";
+import { Popup } from "../components/popup";
 
 interface DetailsProps {
   router: SingletonRouter;
@@ -27,7 +28,7 @@ class Details extends Component<DetailsProps> {
     const { id } = router.query;
 
     return (
-      <DataProvider>
+      <Popup paddingLeft={16} paddingRight={16}>
         <DataConsumer>
           {({ findRepo }: DataConsumerState) => {
             const repo = findRepo(id as string);
@@ -37,16 +38,7 @@ class Details extends Component<DetailsProps> {
             }
 
             return (
-              <Pane
-                border={"1px solid red"}
-                height={400}
-                width={325}
-                display={"flex"}
-                alignItems={"vertical"}
-                flexDirection={"column"}
-                paddingLeft={16}
-                paddingRight={16}
-              >
+              <Fragment>
                 <EditableTitle repo={repo} />
                 <EditableField repo={repo} />
 
@@ -59,11 +51,11 @@ class Details extends Component<DetailsProps> {
                   Open in Code
                 </Button>
                 <DeleteRepoButton repo={repo} />
-              </Pane>
+              </Fragment>
             );
           }}
         </DataConsumer>
-      </DataProvider>
+      </Popup>
     );
   }
 }
