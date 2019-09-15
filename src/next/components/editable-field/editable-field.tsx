@@ -1,5 +1,5 @@
 import { autoBind, Choose, If } from "react-extras";
-import { Component } from "react";
+import { Component, FormEvent } from "react";
 import { withRouter, SingletonRouter } from "next/router";
 import {
   IconButton,
@@ -15,23 +15,22 @@ import { withData } from "../../hocs/with-data";
 import { Repo } from "../../../common/interfaces/repo.interface";
 import { Data } from "../../../common/interfaces/data.interface";
 
-interface EditableTitleProps extends Data {
-  field: "localPath";
-  hint: string;
-  label: string;
-  placeholder: string;
+interface EditableLocalPathProps extends Data {
   repo: Repo;
   router: SingletonRouter;
   size: number;
   updateRepo(repo: Repo): void;
 }
 
-interface EditableTitleState {
+interface EditableLocalPathState {
   editing: boolean;
 }
 
-class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
-  constructor(props: EditableTitleProps) {
+class EditableLocalPath extends Component<
+  EditableLocalPathProps,
+  EditableLocalPathState
+> {
+  constructor(props: EditableLocalPathProps) {
     super(props);
     autoBind(this);
 
@@ -43,9 +42,9 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
   input: HTMLInputElement;
 
   updateName(value: string) {
-    const { repo, updateRepo, field } = this.props;
+    const { repo, updateRepo } = this.props;
 
-    repo[field] = value;
+    repo.localPath = value;
     updateRepo(repo);
   }
 
@@ -59,10 +58,15 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
     this.input.focus && this.input.focus();
   }
 
+  onSubmit(e: FormEvent) {
+    e.stopPropagation();
+    this.setState({ editing: false });
+  }
+
   render() {
     const { editing } = this.state;
-    const { repo, placeholder, hint, field, label } = this.props;
-    const value = repo[field];
+    const { repo } = this.props;
+    const value = repo.localPath;
 
     return (
       <Pane
@@ -76,9 +80,9 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Text color="muted">{label}</Text>
+          <Text color="muted">{"Local Path:"}</Text>
           <If condition={!editing}>
-            <Tooltip content={hint}>
+            <Tooltip content={"Edit the local path"}>
               <IconButton
                 height={24}
                 onClick={() =>
@@ -95,17 +99,19 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
               <ClickOutHandler
                 onClickOut={() => this.setState({ editing: false })}
               >
-                <TextInput
-                  innerRef={(ref: HTMLInputElement) => {
-                    this.input = ref;
-                  }}
-                  height={32}
-                  onChange={(e: any) => this.updateName(e.target.value)}
-                  placeholder={placeholder}
-                  spellCheck={false}
-                  value={value}
-                  flex={1}
-                />
+                <form onSubmit={this.onSubmit}>
+                  <TextInput
+                    innerRef={(ref: HTMLInputElement) => {
+                      this.input = ref;
+                    }}
+                    height={32}
+                    onChange={(e: any) => this.updateName(e.target.value)}
+                    placeholder={"/home/projects/electron"}
+                    spellCheck={false}
+                    value={value}
+                    flex={1}
+                  />
+                </form>
               </ClickOutHandler>
             </Choose.When>
             <Choose.Otherwise>
@@ -124,4 +130,4 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
   }
 }
 
-export default withRouter(withData(EditableTitle));
+export default withRouter(withData(EditableLocalPath));

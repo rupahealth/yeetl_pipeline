@@ -1,5 +1,5 @@
 import { autoBind, Choose } from "react-extras";
-import { Component } from "react";
+import { Component, FormEvent } from "react";
 import { withRouter, SingletonRouter } from "next/router";
 import {
   Heading,
@@ -54,6 +54,11 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
     router.push("/");
   }
 
+  onSubmit(e: FormEvent) {
+    e.stopPropagation();
+    this.setState({ editing: false });
+  }
+
   render() {
     const { editing } = this.state;
     const { repo } = this.props;
@@ -76,18 +81,20 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
             <ClickOutHandler
               onClickOut={() => this.setState({ editing: false })}
             >
-              <TextInput
-                innerRef={(ref: HTMLInputElement) => {
-                  this.input = ref;
-                }}
-                height={32}
-                marginLeft={minorScale(3)}
-                onChange={(e: any) => this.updateName(e.target.value)}
-                placeholder={"Repository's name"}
-                spellCheck={false}
-                value={value}
-                flex={1}
-              />
+              <form onSubmit={this.onSubmit}>
+                <TextInput
+                  innerRef={(ref: HTMLInputElement) => {
+                    this.input = ref;
+                  }}
+                  height={32}
+                  marginLeft={minorScale(3)}
+                  onChange={(e: any) => this.updateName(e.target.value)}
+                  placeholder={"github/electron"}
+                  spellCheck={false}
+                  value={value}
+                  flex={1}
+                />
+              </form>
             </ClickOutHandler>
           </Choose.When>
           <Choose.Otherwise>

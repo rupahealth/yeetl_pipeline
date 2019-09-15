@@ -48,13 +48,7 @@ class Details extends Component<DetailsProps> {
                 paddingRight={16}
               >
                 <EditableTitle repo={repo} />
-                <EditableField
-                  repo={repo}
-                  hint={"Edit the local path"}
-                  field={"localPath"}
-                  label={"Local Path:"}
-                  placeholder={"Repository's local path"}
-                />
+                <EditableField repo={repo} />
 
                 <Button
                   autoFocus={true}
