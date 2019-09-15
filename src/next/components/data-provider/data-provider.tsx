@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { autoBind } from "react-extras";
 import { ulid } from "ulid";
 
-import { Data } from "./data.interface";
+import { Data } from "../../../common/interfaces/data.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 interface DataProviderProps {

@@ -9,7 +9,7 @@
     "removeComments": true,
     "sourceMap": true,
     "sourceRoot": "/",
-    "target": "es6",
+    "target": "es2015",
     "typeRoots": [
       "../../node_modules/@types",
       "../../node_modules/web-ext-types"

@@ -1,5 +1,6 @@
+import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
-import { Pane } from "evergreen-ui";
+import { Pane, Button, minorScale } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
 import { DataProvider, DataConsumer } from "../components/data-provider";
@@ -12,6 +13,15 @@ interface DetailsProps {
   router: SingletonRouter;
 }
 class Details extends Component<DetailsProps> {
+  constructor(props: DetailsProps) {
+    super(props);
+
+    autoBind(this);
+  }
+
+  openInCode(path: string) {
+    window.location.href = `vscode://file${path}`;
+  }
   render() {
     const { router } = this.props;
     const { id } = router.query;
@@ -46,6 +56,14 @@ class Details extends Component<DetailsProps> {
                   placeholder={"Repository's local path"}
                 />
 
+                <Button
+                  autoFocus={true}
+                  iconBefore={"share"}
+                  marginTop={minorScale(3)}
+                  onClick={() => this.openInCode(repo.localPath)}
+                >
+                  Open in Code
+                </Button>
                 <DeleteRepoButton repo={repo} />
               </Pane>
             );

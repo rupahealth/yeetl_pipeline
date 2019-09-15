@@ -1,4 +1,4 @@
-import { autoBind } from "react-extras";
+import { autoBind, If } from "react-extras";
 import { Component, Fragment } from "react";
 import { Dialog, Button, minorScale, TextInputField } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
@@ -12,6 +12,8 @@ interface CreateRepoButtonProps {
   value?: string;
   hasIcon?: boolean;
   defaultName?: string;
+  showInitially?: boolean;
+  justModal?: boolean;
 }
 
 interface CreateRepoButtonState {
@@ -47,6 +49,16 @@ class CreateRepoButton extends Component<
     };
   }
 
+  componentDidUpdate({
+    showInitially: oldShowInitially
+  }: CreateRepoButtonProps) {
+    const { showInitially, defaultName } = this.props;
+
+    if (showInitially && showInitially !== oldShowInitially) {
+      this.setState({ showPrompt: true, name: defaultName });
+    }
+  }
+
   async createRepo() {
     const { createRepo, router } = this.props;
     const { name, localPath } = this.state;
@@ -64,7 +76,12 @@ class CreateRepoButton extends Component<
   }
 
   render() {
-    const { value = "New", hasIcon = true, defaultName = null } = this.props;
+    const {
+      value = "New",
+      hasIcon = true,
+      defaultName = null,
+      justModal = false
+    } = this.props;
     const { showPrompt, name, localPath } = this.state;
     const isConfirmDisabled = empty(name) || empty(localPath);
 
@@ -104,18 +121,19 @@ class CreateRepoButton extends Component<
             }
           />
         </Dialog>
-
-        <Button
-          appearance={"primary"}
-          iconBefore={hasIcon ? "git-repo" : undefined}
-          intent={"success"}
-          marginLeft={minorScale(3)}
-          onClick={() => {
-            this.setState({ showPrompt: true, name: defaultName });
-          }}
-        >
-          {value}
-        </Button>
+        <If condition={!justModal}>
+          <Button
+            appearance={"primary"}
+            iconBefore={hasIcon ? "git-repo" : undefined}
+            intent={"success"}
+            marginLeft={minorScale(3)}
+            onClick={() => {
+              this.setState({ showPrompt: true, name: defaultName });
+            }}
+          >
+            {value}
+          </Button>
+        </If>
       </Fragment>
     );
   }

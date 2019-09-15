@@ -13,7 +13,7 @@ import ClickOutHandler from "react-onclickout";
 
 import { withData } from "../../hocs/with-data";
 import { Repo } from "../../../common/interfaces/repo.interface";
-import { Data } from "../data-provider/data.interface";
+import { Data } from "../../../common/interfaces/data.interface";
 
 interface EditableTitleProps extends Data {
   repo: Repo;

@@ -1,4 +1,4 @@
-import { Repo } from "../../../common/interfaces/repo.interface";
+import { Repo } from "./repo.interface";
 
 export interface Data {
   repos: { [id: string]: Repo };

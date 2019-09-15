@@ -2,7 +2,7 @@ import { autoBind, Choose } from "react-extras";
 import { Component } from "react";
 import { Pane, Heading, minorScale, Button } from "evergreen-ui";
 
-import { Data } from "../data-provider/data.interface";
+import { Data } from "../../../common/interfaces/data.interface";
 import { RepoRow } from "../repo-row";
 import { withData } from "../../hocs/with-data";
 import { SearchingIcon } from "../searching-icon";

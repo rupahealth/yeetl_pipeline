@@ -1,4 +1,4 @@
-import { Data } from "./data.interface";
+import { Data } from "../../../common/interfaces/data.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 export interface DataConsumerState extends Data {
