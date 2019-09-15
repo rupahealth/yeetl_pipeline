@@ -6,6 +6,7 @@ import {
   minorScale,
   Pane,
   Text,
+  Heading,
   TextInput,
   Tooltip
 } from "evergreen-ui";
@@ -85,7 +86,7 @@ class EditableLocalPath extends Component<
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Text color="muted">{"Local Path:"}</Text>
+          <Heading size={300}>{"Local Path:"}</Heading>
           <If condition={!editing}>
             <Tooltip content={"Edit the local path"}>
               <IconButton
