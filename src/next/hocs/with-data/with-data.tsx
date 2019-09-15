@@ -9,17 +9,8 @@ export const withData = (
   return (props: any) => {
     return (
       <DataConsumer>
-        {({ repos, createRepo, deleteRepo, updateRepo, loaded }) => {
-          return (
-            <Component
-              {...props}
-              repos={repos}
-              loaded={loaded}
-              createRepo={createRepo}
-              deleteRepo={deleteRepo}
-              updateRepo={updateRepo}
-            />
-          );
+        {data => {
+          return <Component {...props} {...data} />;
         }}
       </DataConsumer>
     );

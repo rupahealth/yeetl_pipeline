@@ -20,11 +20,14 @@ interface EditableLocalPathProps extends Data {
   router: SingletonRouter;
   size: number;
   updateRepo(repo: Repo): void;
+  updateFooter(footer: string): void;
 }
 
 interface EditableLocalPathState {
   editing: boolean;
 }
+
+const footerMessage = "press ⏎ to submit value";
 
 class EditableLocalPath extends Component<
   EditableLocalPathProps,
@@ -60,12 +63,14 @@ class EditableLocalPath extends Component<
 
   onSubmit(e: FormEvent) {
     e.stopPropagation();
+
+    this.props.updateFooter(undefined);
     this.setState({ editing: false });
   }
 
   render() {
     const { editing } = this.state;
-    const { repo } = this.props;
+    const { repo, updateFooter } = this.props;
     const value = repo.localPath;
 
     return (
@@ -86,7 +91,10 @@ class EditableLocalPath extends Component<
               <IconButton
                 height={24}
                 onClick={() =>
-                  this.setState({ editing: true }, () => this.focus())
+                  this.setState({ editing: true }, () => {
+                    updateFooter(footerMessage);
+                    this.focus();
+                  })
                 }
                 icon="edit"
               />
@@ -97,7 +105,11 @@ class EditableLocalPath extends Component<
           <Choose>
             <Choose.When condition={editing}>
               <ClickOutHandler
-                onClickOut={() => this.setState({ editing: false })}
+                onClickOut={() =>
+                  this.setState({ editing: false }, () =>
+                    updateFooter(undefined)
+                  )
+                }
               >
                 <form onSubmit={this.onSubmit}>
                   <TextInput
@@ -117,7 +129,10 @@ class EditableLocalPath extends Component<
             <Choose.Otherwise>
               <div
                 onClick={() =>
-                  this.setState({ editing: true }, () => this.focus())
+                  this.setState({ editing: true }, () => {
+                    updateFooter(footerMessage);
+                    this.focus();
+                  })
                 }
               >
                 <Text cursor={"pointer"}>{value}</Text>

@@ -9,16 +9,23 @@ interface DataProviderProps {
   children: JSX.Element | JSX.Element[];
 }
 
+interface DataProviderState extends Data {
+  loaded: boolean;
+  footer: string;
+}
+
 const DataContext = React.createContext({
   repos: {},
   createRepo: async (_repo: Partial<Repo>) => null,
   deleteRepo: (_repo: Repo) => null,
   findRepo: (_id: string) => null,
   updateRepo: (_repo: Repo) => null,
-  loaded: false
+  updateFooter: (_footer: string) => null,
+  loaded: false,
+  footer: null
 });
 
-class DataProvider extends Component<DataProviderProps, Data> {
+class DataProvider extends Component<DataProviderProps, DataProviderState> {
   constructor(props) {
     super(props);
 
@@ -26,7 +33,8 @@ class DataProvider extends Component<DataProviderProps, Data> {
 
     this.state = {
       repos: {},
-      loaded: false
+      loaded: false,
+      footer: null
     };
   }
 
@@ -94,9 +102,13 @@ class DataProvider extends Component<DataProviderProps, Data> {
     browser.storage.local.set({ data });
   }
 
+  updateFooter(footer: string) {
+    this.setState({ footer });
+  }
+
   render() {
     const { children } = this.props;
-    const { repos, loaded } = this.state;
+    const { repos, loaded, footer } = this.state;
 
     return (
       <DataContext.Provider
@@ -106,7 +118,9 @@ class DataProvider extends Component<DataProviderProps, Data> {
           deleteRepo: this.deleteRepo,
           updateRepo: this.updateRepo,
           findRepo: this.findRepo,
-          loaded
+          updateFooter: this.updateFooter,
+          loaded,
+          footer
         }}
       >
         {children}

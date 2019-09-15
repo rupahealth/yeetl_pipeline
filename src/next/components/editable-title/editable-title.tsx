@@ -15,10 +15,13 @@ import { withData } from "../../hocs/with-data";
 import { Repo } from "../../../common/interfaces/repo.interface";
 import { Data } from "../../../common/interfaces/data.interface";
 
+const footerMessage = "press ⏎ to submit value";
+
 interface EditableTitleProps extends Data {
   repo: Repo;
   router: SingletonRouter;
   updateRepo(repo: Repo): void;
+  updateFooter(footer: string): void;
 }
 
 interface EditableTitleState {
@@ -56,12 +59,14 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
 
   onSubmit(e: FormEvent) {
     e.stopPropagation();
+
+    this.props.updateFooter(undefined);
     this.setState({ editing: false });
   }
 
   render() {
     const { editing } = this.state;
-    const { repo } = this.props;
+    const { repo, updateFooter } = this.props;
     const value = repo.name;
 
     return (
@@ -83,7 +88,9 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
         <Choose>
           <Choose.When condition={editing}>
             <ClickOutHandler
-              onClickOut={() => this.setState({ editing: false })}
+              onClickOut={() =>
+                this.setState({ editing: false }, () => updateFooter(undefined))
+              }
             >
               <form
                 onSubmit={this.onSubmit}
@@ -111,7 +118,10 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
             <Heading
               marginLeft={minorScale(3)}
               onClick={() =>
-                this.setState({ editing: true }, () => this.focus())
+                this.setState({ editing: true }, () => {
+                  updateFooter(footerMessage);
+                  this.focus();
+                })
               }
               cursor={"pointer"}
               textDecoration={"underline"}
@@ -128,7 +138,11 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
                 marginLeft={minorScale(3)}
                 height={24}
                 onClick={() =>
-                  this.setState({ editing: true }, () => this.focus())
+                  this.setState({ editing: true }, () => {
+                    console.log(updateFooter);
+                    updateFooter(footerMessage);
+                    this.focus();
+                  })
                 }
                 icon="edit"
               />

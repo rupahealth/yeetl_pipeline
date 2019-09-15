@@ -6,7 +6,7 @@ import { withRouter, SingletonRouter } from "next/router";
 import { DataConsumer } from "../components/data-provider";
 import { DataConsumerState } from "../components/data-provider/data-consumer-state.interface";
 import { DeleteRepoButton } from "../components/delete-repo-button";
-import { EditableField } from "../components/editable-field";
+import { EditableLocalPath } from "../components/editable-local-path";
 import { EditableTitle } from "../components/editable-title";
 import { Popup } from "../components/popup";
 
@@ -40,7 +40,7 @@ class Details extends Component<DetailsProps> {
             return (
               <Fragment>
                 <EditableTitle repo={repo} />
-                <EditableField repo={repo} />
+                <EditableLocalPath repo={repo} />
 
                 <Button
                   autoFocus={true}

@@ -6,4 +6,7 @@ export interface DataConsumerState extends Data {
   deleteRepo(repo: Repo): void;
   createRepo(repo: Partial<Repo>): Promise<Repo>;
   findRepo(id: string): Repo;
+  updateFooter(footer: string): void;
+  loaded: boolean;
+  footer: string;
 }
