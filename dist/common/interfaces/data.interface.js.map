@@ -1,0 +1,1 @@
+{"version":3,"file":"data.interface.js","sourceRoot":"/","sources":["common/interfaces/data.interface.ts"],"names":[],"mappings":"","sourcesContent":["import { Repo } from \"./repo.interface\";\n\nexport interface Data {\n  repos: { [id: string]: Repo };\n}\n"]}

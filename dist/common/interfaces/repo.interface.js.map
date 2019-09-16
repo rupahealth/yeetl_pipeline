@@ -1,0 +1,1 @@
+{"version":3,"file":"repo.interface.js","sourceRoot":"/","sources":["common/interfaces/repo.interface.ts"],"names":[],"mappings":"","sourcesContent":["export interface Repo {\n  localPath: string;\n  name: string;\n  id: string;\n}\n"]}

@@ -73,7 +73,7 @@ function queryString(data: { [key: string]: string }): string {
 }
 
 function openPopup(data: any, tab: browser.tabs.Tab) {
-  const path = browser.extension.getURL("dist/next/out/index.html");
+  const path = browser.extension.getURL("next/out/index.html");
   const query = queryString(data);
   const popup = encodeURI(`${path}${query}`);
 
