@@ -64,7 +64,7 @@ function insertStyle() {
       box-shadow: -3px 5px 15px rgba(0, 0, 0, 0.16), 
                   0 3px 6px rgba(0, 0, 0, 0.23);
       background: white;
-      border: 1px solid #6666;
+      border: none;
       height: 402px;
       position: fixed;
       right: 0;
