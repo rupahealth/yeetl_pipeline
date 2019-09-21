@@ -59,6 +59,12 @@ class EditableLocalPath extends Component<
   }
 
   focus() {
+    const { updateFooter } = this.props;
+
+    this.setState({ editing: true }, () => {
+      setTimeout(() => updateFooter(footerMessage), 10);
+    });
+
     this.input.focus && this.input.focus();
   }
 
@@ -71,7 +77,7 @@ class EditableLocalPath extends Component<
 
   render() {
     const { editing } = this.state;
-    const { repo, updateFooter } = this.props;
+    const { repo } = this.props;
     const value = repo.localPath;
 
     return (
@@ -89,29 +95,14 @@ class EditableLocalPath extends Component<
           <Heading size={300}>{"Local Path:"}</Heading>
           <If condition={!editing}>
             <Tooltip content={"Edit the local path"}>
-              <IconButton
-                height={24}
-                onClick={() =>
-                  this.setState({ editing: true }, () => {
-                    updateFooter(footerMessage);
-                    this.focus();
-                  })
-                }
-                icon="edit"
-              />
+              <IconButton height={24} onClick={this.focus} icon="edit" />
             </Tooltip>
           </If>
         </Pane>
         <Pane marginTop={minorScale(1)}>
           <Choose>
             <Choose.When condition={editing}>
-              <ClickOutHandler
-                onClickOut={() =>
-                  this.setState({ editing: false }, () =>
-                    updateFooter(undefined)
-                  )
-                }
-              >
+              <ClickOutHandler onClickOut={this.onSubmit}>
                 <form onSubmit={this.onSubmit}>
                   <TextInput
                     innerRef={(ref: HTMLInputElement) => {
@@ -128,14 +119,7 @@ class EditableLocalPath extends Component<
               </ClickOutHandler>
             </Choose.When>
             <Choose.Otherwise>
-              <div
-                onClick={() =>
-                  this.setState({ editing: true }, () => {
-                    updateFooter(footerMessage);
-                    this.focus();
-                  })
-                }
-              >
+              <div onClick={this.focus}>
                 <Text cursor={"pointer"}>{value}</Text>
               </div>
             </Choose.Otherwise>

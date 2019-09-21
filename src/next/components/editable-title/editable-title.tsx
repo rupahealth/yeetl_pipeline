@@ -41,6 +41,12 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
   input: HTMLInputElement;
 
   focus() {
+    const { updateFooter } = this.props;
+
+    this.setState({ editing: true }, () => {
+      setTimeout(() => updateFooter(footerMessage), 10);
+    });
+
     this.input.focus && this.input.focus();
   }
 
@@ -67,7 +73,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
 
   render() {
     const { editing } = this.state;
-    const { repo, updateFooter } = this.props;
+    const { repo } = this.props;
     const value = repo.name;
 
     return (
@@ -88,11 +94,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
         </Tooltip>
         <Choose>
           <Choose.When condition={editing}>
-            <ClickOutHandler
-              onClickOut={() =>
-                this.setState({ editing: false }, () => updateFooter(undefined))
-              }
-            >
+            <ClickOutHandler onClickOut={this.onSubmit}>
               <form
                 onSubmit={this.onSubmit}
                 style={{
@@ -118,12 +120,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
           <Choose.Otherwise>
             <Heading
               marginLeft={minorScale(3)}
-              onClick={() =>
-                this.setState({ editing: true }, () => {
-                  updateFooter(footerMessage);
-                  this.focus();
-                })
-              }
+              onClick={this.focus}
               cursor={"pointer"}
               textDecoration={"underline"}
               size={600}
@@ -138,13 +135,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
                 flexShrink={0}
                 marginLeft={minorScale(3)}
                 height={24}
-                onClick={() =>
-                  this.setState({ editing: true }, () => {
-                    console.log(updateFooter);
-                    updateFooter(footerMessage);
-                    this.focus();
-                  })
-                }
+                onClick={this.focus}
                 icon="edit"
               />
             </Tooltip>
