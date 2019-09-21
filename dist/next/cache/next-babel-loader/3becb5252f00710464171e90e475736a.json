@@ -1,1 +1,0 @@
-{"ast":null,"code":"export { DataProvider, DataConsumer, DataContext } from \"./data-provider\";","map":null,"metadata":{},"sourceType":"module"}
