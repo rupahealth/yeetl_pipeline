@@ -53,8 +53,9 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
 
   navigateHome() {
     const { router } = this.props;
+    const { from } = router.query;
 
-    router.push("/");
+    router.push(`/?from=${from}`);
   }
 
   onSubmit(e: FormEvent) {

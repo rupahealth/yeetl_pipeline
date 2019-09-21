@@ -8,6 +8,7 @@ import { DataConsumerState } from "../components/data-provider/data-consumer-sta
 import { DeleteRepoButton } from "../components/delete-repo-button";
 import { EditableLocalPath } from "../components/editable-local-path";
 import { EditableTitle } from "../components/editable-title";
+import { isFirefox } from "../../common/utils/is-firefox.util";
 import { Popup } from "../components/popup";
 
 interface DetailsProps {
@@ -20,9 +21,16 @@ class Details extends Component<DetailsProps> {
     autoBind(this);
   }
 
-  openInCode(path: string) {
-    window.location.href = `vscode://file${path}`;
+  openInCode(localPath: string) {
+    const path = `vscode://file${localPath}`;
+
+    if (isFirefox()) {
+      window.location.href = path;
+    } else {
+      browser.tabs.create({ url: path });
+    }
   }
+
   render() {
     const { router } = this.props;
     const { id } = router.query;

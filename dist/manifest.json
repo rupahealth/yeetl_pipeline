@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "GitHub to Code",
   "version": "1.0",
-  "description": "Allows github linking to local editor.",
+  "description": "Allows developers to open GitHub repositories locally within Visual Studio Code.",
   "icons": {
     "48": "icons/code-logo.png"
   },
@@ -14,14 +14,14 @@
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*"],
-      "js": ["./extension/content.js"]
+      "js": ["./common/utils/polyfill.util.js", "./extension/content.js"]
     }
   ],
-  "permissions": ["activeTab", "menus", "storage", "tabs", "https://*/"],
+  "permissions": ["activeTab", "contextMenus", "https://*/", "storage", "tabs"],
 
-  "web_accessible_resources": ["icons/code-logo.png", "next/out/_next/**/*"],
+  "web_accessible_resources": ["icons/code-logo.png", "next/out/*"],
   "background": {
-    "scripts": ["./extension/background.js"]
+    "scripts": ["./common/utils/polyfill.util.js", "./extension/background.js"]
   },
   "browser_action": {
     "default_icon": "icons/code-logo.png",

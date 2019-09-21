@@ -23,12 +23,13 @@ class Footer extends Component<FooterProps> {
         width={"100%"}
         background={"tint2"}
       >
-        <Paragraph size={200} fontFamily={"monospace"}>
+        <Paragraph size={300} fontFamily={"monospace"}>
           <Choose>
             <Choose.When condition={Boolean(footer)}>{footer}</Choose.When>
             <Choose.Otherwise>
               {`created by `}
               <Link
+                size={300}
                 fontFamily={"monospace"}
                 textDecoration={"none"}
                 color={"neutral"}

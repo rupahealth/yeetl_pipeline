@@ -3,7 +3,9 @@ import { autoBind } from "react-extras";
 import { Button, Table, Pane, Paragraph, minorScale } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
+import { isFirefox } from "../../../common/utils/is-firefox.util";
 import { Repo } from "../../../common/interfaces/repo.interface";
+
 interface RepoRowProps {
   repo: Repo;
   router: SingletonRouter;
@@ -16,17 +18,26 @@ class RepoRow extends Component<RepoRowProps> {
     autoBind(this);
   }
 
-  openInCode() {
+  async openInCode() {
     const {
       repo: { localPath }
     } = this.props;
-    window.location.href = `vscode://file${localPath}`;
+
+    const path = `vscode://file${localPath}`;
+
+    if (isFirefox()) {
+      window.location.href = path;
+    } else {
+      const newTab = await browser.tabs.create({ url: path });
+      setTimeout(() => browser.tabs.remove(newTab.id), 5000);
+    }
   }
 
   editRepo() {
     const { router, repo } = this.props;
+    const { from } = router.query;
 
-    router.push(`/details?id=${repo.id}`);
+    router.push(`/details?id=${repo.id}&from=${from}`);
   }
 
   render() {
