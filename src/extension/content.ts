@@ -61,7 +61,13 @@ function generateMessage(event?: MouseEvent) {
 
       if (isFilePage()) {
         const branch = getBranch();
-        const path = window.location.href.split(branch)[1];
+        let path = window.location.href.split(branch)[1];
+
+        const line = node.getAttribute("data-line-number");
+
+        if (line) {
+          path = path.concat(`:${line}`);
+        }
 
         return { subject: "gh-code-open-file", path };
       }
