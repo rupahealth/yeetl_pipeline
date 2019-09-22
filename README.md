@@ -2,7 +2,7 @@
 
 Browser extension with [Typescript](http://www.typescriptlang.org/) + [nextjs](https://nextjs.org/)
 
-## 🛠️ Development
+## Development 🛠️
 
 ```bash
 yarn build:all  # build extension + next
@@ -13,7 +13,7 @@ yarn watch:ext  # watch and build changes in just extension
 yarn watch:next # watch and build changes in just next
 ```
 
-## 🛣️ Roadmap
+## Roadmap 🛣️
   - [x] Chrome support 🌐
   - [x] Firefox support 🦊
   - [x] Open from directories 🗄
