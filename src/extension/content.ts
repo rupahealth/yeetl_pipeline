@@ -83,6 +83,18 @@ function generateMessage(event?: MouseEvent) {
         return { subject: "gh-code-open-file", path };
       }
 
+      const inlineCodePath = getPathFromInlineCode(node);
+
+      if (inlineCodePath) {
+        let path = "/".concat(inlineCodePath);
+
+        if (line) {
+          path = path.concat(`:${line}`);
+        }
+
+        return { subject: "gh-code-open-file", path };
+      }
+
       const row = getParentRow(node);
 
       if (row && row.innerHTML.match(/class=\"octicon octicon-file\"/)) {
@@ -96,6 +108,23 @@ function generateMessage(event?: MouseEvent) {
   }
 
   return { subject: "clear-menus" };
+}
+
+function getPathFromInlineCode(element: HTMLElement) {
+  for (const code of document.querySelectorAll(".border.rounded-1.my-2")) {
+    if (code.contains(element)) {
+      const anchor = code.querySelector(".lh-condensed a");
+
+      if (anchor) {
+        return anchor.innerHTML
+          .split("/")
+          .splice(1)
+          .join("/");
+      }
+
+      break;
+    }
+  }
 }
 
 function getPathFromCodeSample(element: HTMLElement) {

@@ -19,7 +19,7 @@ yarn watch:next # watch and build changes in just next
   - [x] Open from directories 🗄
   - [x] Open from file pages (w/ line numbers?) 📄
   - [x] Open from pull requests 📩
-  - [ ] Open from inline markdown 🗒
+  - [x] Open from inline markdown 🗒
   - [ ] Keyboard bindings ⌨️
   - [ ] Settings page ⚙️
 
