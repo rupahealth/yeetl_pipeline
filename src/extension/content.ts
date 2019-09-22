@@ -38,6 +38,10 @@ document.addEventListener("click", () => {
   }
 });
 
+function isFilePage() {
+  return Boolean(document.getElementById("blob-path"));
+}
+
 function generateMenus(event?: MouseEvent) {
   browser.runtime.sendMessage(generateMessage(event));
 }
@@ -54,6 +58,20 @@ function generateMessage(event?: MouseEvent) {
   if (matches) {
     if (event) {
       const node = event.target as HTMLElement;
+
+      if (isFilePage()) {
+        const branch = getBranch();
+        let path = window.location.href.split(branch)[1];
+
+        const line = node.getAttribute("data-line-number");
+
+        if (line) {
+          path = path.concat(`:${line}`);
+        }
+
+        return { subject: "gh-code-open-file", path };
+      }
+
       const row = getParentRow(node);
 
       if (row && row.innerHTML.match(/class=\"octicon octicon-file\"/)) {
