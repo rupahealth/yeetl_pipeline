@@ -8,78 +8,124 @@ const DEFAULT_DATA = {
 
 let DATA = DEFAULT_DATA.data as Data;
 
-browser.runtime.onMessage.addListener(async ({ subject }: any) => {
-  console.log({ subject });
-  switch (subject) {
-    case "gh-code-open-repo": {
-      console.log("creating context menu");
+let contextMenuShown = false;
 
-      const options = {
-        id: "gh-code-open-repo",
-        contexts: ["all" as browser.contextMenus.ContextType],
-        title: "Open in Code",
-        icons: { "16": "../icons/code-logo.png" },
-        documentUrlPatterns: [`*://*.github.com/*`]
-      };
-
-      if (chrome) {
-        delete options.icons;
-      }
-
-      browser.contextMenus.create(options);
-      break;
-    }
-    case "close-popup": {
-      const tabs = await browser.tabs.query({});
-      tabs.forEach(({ id }) => browser.tabs.sendMessage(id, { subject }));
-    }
-  }
+browser.contextMenus.onShown.addListener(() => {
+  contextMenuShown = true;
 });
 
-browser.contextMenus.onClicked.addListener(({ menuItemId }, tab) => {
-  switch (menuItemId) {
-    case "gh-code-open-repo": {
-      openRepo(tab);
-      break;
-    }
-  }
-});
-
-browser.browserAction.onClicked.addListener(function(tab) {
-  browser.windows.create({
-    url: browser.runtime.getURL("dist/next/out/index.html"),
-    type: "popup",
-    height: 600,
-    width: 1300
-  });
+browser.contextMenus.onHidden.addListener(() => {
+  contextMenuShown = false;
 });
 
 browser.storage.onChanged.addListener(loadData);
 
 loadData();
 
-async function openRepo(tab: browser.tabs.Tab) {
-  const { repos } = DATA;
-  const matches = tab.url.match(/github.com\/([^/]*\/[^/]*)/);
+browser.runtime.onMessage.addListener(async ({ subject, path }: any) => {
+  switch (subject) {
+    case "gh-code-open-repo": {
+      createContextMenu(
+        "gh-code-open-repo",
+        "Open in Code",
+        (_info: any, tab: browser.tabs.Tab) => openRepo(tab)
+      );
 
-  if (matches) {
-    const name = matches[1];
-    const repo = Object.entries(repos)
-      .map(([_key, repo]) => repo)
-      .find(repo => repo.name === name);
+      break;
+    }
+
+    case "gh-code-open-file": {
+      createContextMenu(
+        "gh-code-open-file",
+        "Open file in Code",
+        (_info: any, tab: browser.tabs.Tab) => openFile(tab, path)
+      );
+
+      break;
+    }
+
+    case "clear-menus": {
+      await browser.contextMenus.removeAll();
+      break;
+    }
+
+    case "close-popup": {
+      const tabs = await browser.tabs.query({});
+      tabs.forEach(({ id }) => browser.tabs.sendMessage(id, { subject }));
+      break;
+    }
+  }
+});
+
+async function openRepo(tab: browser.tabs.Tab) {
+  const repo = getCurrentRepo(tab);
+
+  if (repo) {
+    const path = `vscode://file${repo.localPath}`;
+
+    if (isFirefox()) {
+      window.location.href = path;
+    } else {
+      browser.tabs.create({ url: path });
+    }
+  } else {
+    openPopup({ intent: "create-repo", name }, tab);
+  }
+}
+
+async function openFile(tab: browser.tabs.Tab, filePath: string) {
+  openRepo(tab);
+
+  setTimeout(() => {
+    const repo = getCurrentRepo(tab);
 
     if (repo) {
-      const path = `vscode://file${repo.localPath}`;
+      const path = `vscode://file${repo.localPath}${filePath}`;
 
       if (isFirefox()) {
         window.location.href = path;
       } else {
         browser.tabs.create({ url: path });
       }
-    } else {
-      openPopup({ intent: "create-repo", name }, tab);
     }
+  }, 10);
+}
+
+async function createContextMenu(
+  id: string,
+  title: string,
+  onclick: (_info: any, tab: browser.tabs.Tab) => void
+) {
+  if (contextMenuShown) {
+    return;
   }
+
+  await browser.contextMenus.removeAll();
+
+  const options = {
+    id,
+    contexts: ["all" as browser.contextMenus.ContextType],
+    title,
+    icons: { "16": "../icons/code-logo.png" },
+    documentUrlPatterns: [`*://*.github.com/*`],
+    onclick
+  };
+
+  if (chrome) {
+    delete options.icons;
+  }
+
+  browser.contextMenus.create(options);
+}
+
+function getCurrentRepo(tab: browser.tabs.Tab) {
+  const { repos } = DATA;
+  const matches = tab.url.match(/github.com\/([^/]*\/[^/]*)/);
+  const name = matches[1];
+
+  return Object.entries(repos)
+    .map(([_key, repo]) => repo)
+    .find(repo => repo.name === name);
 }
 
 function queryString(data: { [key: string]: string }): string {

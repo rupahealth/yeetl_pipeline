@@ -1,9 +1,9 @@
 const matches = window.location.href.match(/github.com\/([^/]*\/[^/]*)/);
 let popup: HTMLIFrameElement = null;
 
-if (matches) {
-  browser.runtime.sendMessage({ subject: "gh-code-open-repo" });
-}
+document.addEventListener("mousemove", generateMenus);
+
+generateMenus();
 
 if (!isFirefox()) {
   insertStyle();
@@ -19,12 +19,14 @@ browser.runtime.onMessage.addListener(({ subject, path }: any) => {
       } else {
         popup = insertPopup(path);
       }
+
       break;
     }
     case "close-popup": {
       if (isPopup()) {
         removePopup();
       }
+
       break;
     }
   }
@@ -35,6 +37,54 @@ document.addEventListener("click", () => {
     removePopup();
   }
 });
+
+function generateMenus(event?: MouseEvent) {
+  browser.runtime.sendMessage(generateMessage(event));
+}
+
+function getParentRow(child: HTMLElement): HTMLTableRowElement {
+  for (const row of document.getElementsByTagName("tr")) {
+    if (row.className.match(/js-navigation-item/) && row.contains(child)) {
+      return row;
+    }
+  }
+}
+
+function generateMessage(event?: MouseEvent) {
+  if (matches) {
+    if (event) {
+      const node = event.target as HTMLElement;
+      const row = getParentRow(node);
+
+      if (row && row.innerHTML.match(/class=\"octicon octicon-file\"/)) {
+        const path = pathFromFileRow(row);
+
+        return { subject: "gh-code-open-file", path };
+      }
+    }
+
+    return { subject: "gh-code-open-repo" };
+  }
+
+  return { subject: "clear-menus" };
+}
+
+function getBranch(): string {
+  const matches = document.title.match(/at (\w*)/);
+
+  if (matches) {
+    return matches[1];
+  }
+
+  return "master";
+}
+
+function pathFromFileRow(row: HTMLTableRowElement): string {
+  const { href } = row.querySelector("a");
+  const branch = getBranch();
+
+  return href.split(branch)[1];
+}
 
 function removePopup() {
   document.body.removeChild(popup);
@@ -47,7 +97,6 @@ function isPopup(): boolean {
 
 function insertPopup(path: string): HTMLIFrameElement {
   const popup = document.createElement("iframe");
-  console.log("-----", path);
 
   popup.src = path;
   popup.id = "gh-code-popup";
