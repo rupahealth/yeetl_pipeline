@@ -58,12 +58,23 @@ function generateMessage(event?: MouseEvent) {
   if (matches) {
     if (event) {
       const node = event.target as HTMLElement;
+      const line = node.getAttribute("data-line-number");
 
       if (isFilePage()) {
         const branch = getBranch();
         let path = window.location.href.split(branch)[1];
 
-        const line = node.getAttribute("data-line-number");
+        if (line) {
+          path = path.concat(`:${line}`);
+        }
+
+        return { subject: "gh-code-open-file", path };
+      }
+
+      const codeSamplePath = getPathFromCodeSample(node);
+
+      if (codeSamplePath) {
+        let path = "/".concat(codeSamplePath);
 
         if (line) {
           path = path.concat(`:${line}`);
@@ -85,6 +96,20 @@ function generateMessage(event?: MouseEvent) {
   }
 
   return { subject: "clear-menus" };
+}
+
+function getPathFromCodeSample(element: HTMLElement) {
+  for (const file of document.getElementsByClassName("file")) {
+    if (file.contains(element)) {
+      const anchor = file.querySelector(".file-info a");
+
+      if (anchor) {
+        return anchor.getAttribute("title");
+      }
+
+      break;
+    }
+  }
 }
 
 function getBranch(): string {

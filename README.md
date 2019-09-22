@@ -18,7 +18,7 @@ yarn watch:next # watch and build changes in just next
   - [x] Firefox support 🦊
   - [x] Open from directories 🗄
   - [x] Open from file pages (w/ line numbers?) 📄
-  - [ ] Open from pull requests 📩
+  - [x] Open from pull requests 📩
   - [ ] Open from inline markdown 🗒
   - [ ] Keyboard bindings ⌨️
   - [ ] Settings page ⚙️
