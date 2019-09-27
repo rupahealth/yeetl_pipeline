@@ -3,7 +3,6 @@ import { autoBind } from "react-extras";
 import { Button, Table, Pane, Paragraph, minorScale } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
-import { isFirefox } from "../../../common/utils/is-firefox.util";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 interface RepoRowProps {
@@ -18,7 +17,9 @@ class RepoRow extends Component<RepoRowProps> {
     autoBind(this);
   }
 
-  async openInCode() {
+  async openInCode(e: MouseEvent) {
+    e.stopPropagation();
+
     const {
       repo: { localPath }
     } = this.props;
@@ -57,12 +58,8 @@ class RepoRow extends Component<RepoRowProps> {
             >
               {name}
             </Paragraph>
-            <Button
-              flexShrink={0}
-              height={24}
-              marginLeft={minorScale(3)}
-              onClick={this.openInCode}
-            >
+
+            <Button flexShrink={0} height={24} onClick={this.openInCode}>
               Open in Code
             </Button>
           </Pane>
