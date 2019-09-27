@@ -25,12 +25,7 @@ class RepoRow extends Component<RepoRowProps> {
 
     const path = `vscode://file${localPath}`;
 
-    if (isFirefox()) {
-      window.location.href = path;
-    } else {
-      const newTab = await browser.tabs.create({ url: path });
-      setTimeout(() => browser.tabs.remove(newTab.id), 5000);
-    }
+    browser.runtime.sendMessage({ subject: "open-path", path });
   }
 
   editRepo() {

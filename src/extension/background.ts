@@ -10,13 +10,15 @@ let DATA = DEFAULT_DATA.data as Data;
 
 let contextMenuShown = false;
 
-browser.contextMenus.onShown.addListener(() => {
-  contextMenuShown = true;
-});
+if (isFirefox()) {
+  browser.contextMenus.onShown.addListener(() => {
+    contextMenuShown = true;
+  });
 
-browser.contextMenus.onHidden.addListener(() => {
-  contextMenuShown = false;
-});
+  browser.contextMenus.onHidden.addListener(() => {
+    contextMenuShown = false;
+  });
+}
 
 browser.storage.onChanged.addListener(loadData);
 
@@ -54,41 +56,46 @@ browser.runtime.onMessage.addListener(async ({ subject, path }: any) => {
       tabs.forEach(({ id }) => browser.tabs.sendMessage(id, { subject }));
       break;
     }
+
+    case "open-path": {
+      openPath(path);
+      break;
+    }
   }
 });
+
+async function openPath(path: string) {
+  console.log("opening", path);
+
+  if (isFirefox()) {
+    window.location.href = path;
+  } else {
+    const tab = (await browser.tabs.query({})).find(({ active }) => active);
+
+    browser.tabs.executeScript(tab.id, {
+      code: `window.location.href = "${path}";`
+    });
+  }
+}
 
 async function openRepo(tab: browser.tabs.Tab) {
   const repo = getCurrentRepo(tab);
 
   if (repo) {
     const path = `vscode://file${repo.localPath}`;
-
-    if (isFirefox()) {
-      window.location.href = path;
-    } else {
-      browser.tabs.create({ url: path });
-    }
+    openPath(path);
   } else {
     openPopup({ intent: "create-repo", name }, tab);
   }
 }
 
 async function openFile(tab: browser.tabs.Tab, filePath: string) {
-  openRepo(tab);
+  const repo = getCurrentRepo(tab);
 
-  setTimeout(() => {
-    const repo = getCurrentRepo(tab);
-
-    if (repo) {
-      const path = `vscode://file${repo.localPath}${filePath}`;
-
-      if (isFirefox()) {
-        window.location.href = path;
-      } else {
-        browser.tabs.create({ url: path });
-      }
-    }
-  }, 10);
+  if (repo) {
+    const path = `vscode://file${repo.localPath}${filePath}`;
+    openPath(path);
+  }
 }
 
 async function createContextMenu(
