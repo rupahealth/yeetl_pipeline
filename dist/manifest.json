@@ -17,7 +17,7 @@
       "js": ["./common/utils/polyfill.util.js", "./extension/content.js"]
     }
   ],
-  "permissions": ["activeTab", "contextMenus", "https://*/", "storage", "tabs"],
+  "permissions": ["activeTab", "contextMenus", "storage", "tabs"],
 
   "web_accessible_resources": ["icons/code-logo.png", "next/out/*"],
   "background": {
