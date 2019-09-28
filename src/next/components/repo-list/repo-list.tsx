@@ -72,7 +72,7 @@ class RepoList extends Component<RepoListProps> {
                   <Button onClick={clearSearch}>Clear query</Button>
                   <CreateRepoButton
                     defaultName={search}
-                    value={"Create repository"}
+                    value={"Create Repository"}
                     hasIcon={false}
                   />
                 </Pane>
@@ -94,7 +94,7 @@ class RepoList extends Component<RepoListProps> {
                 >
                   <CreateRepoButton
                     defaultName={search.length > 0 ? search : undefined}
-                    value={"Create repository"}
+                    value={"Create Repository"}
                     hasIcon={false}
                   />
                 </Pane>
