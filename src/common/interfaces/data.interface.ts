@@ -8,6 +8,5 @@ export interface Data {
 export interface Settings {
   keyboard: {
     enabled: boolean;
-    shortcuts: string[];
   };
 }

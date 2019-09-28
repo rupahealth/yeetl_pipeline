@@ -7,20 +7,45 @@ import {
   Switch,
   Text,
   TagInput,
-  Icon
+  Icon,
+  Link
 } from "evergreen-ui";
 
 import { withData } from "../../hocs/with-data";
 import { DataConsumerState } from "../data-provider/data-consumer-state.interface";
+import { isFirefox } from "../../../common/utils/is-firefox.util";
+
+const SHORTCUT_MAP = {
+  Shift: "⇧ Shift",
+  Ctrl: "⌃ Ctrl",
+  Alt: "⌥ Option",
+  Command: "⌘ Cmd",
+  MacCtrl: "⌃ Ctrl",
+  "⇧": "⇧ Shift",
+  "⌘": "⌘ Cmd",
+  "⌃": "⌃ Ctrl",
+  "⌥": "⌥ Option"
+};
 
 interface KeyboardBindingsProps extends DataConsumerState {
   closeSettings(): void;
 }
 
-class KeyboardBindings extends Component<KeyboardBindingsProps> {
+interface KeyboardBindingState {
+  shortcut: string[];
+}
+
+class KeyboardBindings extends Component<
+  KeyboardBindingsProps,
+  KeyboardBindingState
+> {
   constructor(props: KeyboardBindingsProps) {
     super(props);
     autoBind(this);
+
+    this.state = {
+      shortcut: []
+    };
   }
 
   toggleEnable(enabled: boolean) {
@@ -30,9 +55,45 @@ class KeyboardBindings extends Component<KeyboardBindingsProps> {
     updateSettings(settings);
   }
 
+  openKeyboardSettings() {
+    const url = isFirefox()
+      ? "https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox"
+      : "chrome://extensions/shortcuts";
+
+    browser.tabs.create({
+      active: true,
+      url
+    });
+
+    window.close();
+  }
+
+  filterShortcuts(input: string) {
+    if (input.length === 0) {
+      return [];
+    }
+
+    if (isFirefox()) {
+      return input.split("+").map(value => SHORTCUT_MAP[value] || value);
+    } else {
+      return input.split("").map(value => SHORTCUT_MAP[value] || value);
+    }
+  }
+
+  async componentDidMount() {
+    const { shortcut } = (await browser.commands.getAll()).find(
+      ({ name }) => name === "open-repo-or-file"
+    );
+
+    this.setState({
+      shortcut: this.filterShortcuts(shortcut)
+    });
+  }
+
   render() {
     const { settings } = this.props;
-    const { enabled, shortcuts } = settings.keyboard;
+    const { shortcut } = this.state;
+    const { enabled } = settings.keyboard;
 
     return (
       <Fragment>
@@ -46,9 +107,9 @@ class KeyboardBindings extends Component<KeyboardBindingsProps> {
             display={"flex"}
             alignItems={"center"}
             justifyContent={"space-between"}
-            marginBottom={minorScale(3)}
+            paddingBottom={minorScale(3)}
           >
-            <Heading size={400}>Keyboard Shortcuts</Heading>
+            <Heading size={400}>Keyboard Shortcut</Heading>
             <Pane
               display={"flex"}
               alignItems={"center"}
@@ -71,21 +132,23 @@ class KeyboardBindings extends Component<KeyboardBindingsProps> {
             inputProps={{ display: "none" }}
             width={"100%"}
             disabled={true}
-            values={shortcuts}
+            values={shortcut}
             tagProps={{ isInteractive: false }}
           />
 
           <Pane
-            marginLeft={minorScale(1)}
             marginTop={minorScale(2)}
             display={"flex"}
             alignItems={"center"}
             justifyContent={"start"}
           >
             <Icon icon={"help"} color={"muted"} size={14} />
-            <Heading marginLeft={minorScale(1)} size={200}>
-              Open current repository or file.
-            </Heading>
+            <Text marginLeft={minorScale(1)} size={200}>
+              Update the keyboard shortcut{" "}
+              <Link cursor={"pointer"} onClick={this.openKeyboardSettings}>
+                here.
+              </Link>
+            </Text>
           </Pane>
         </Pane>
       </Fragment>
