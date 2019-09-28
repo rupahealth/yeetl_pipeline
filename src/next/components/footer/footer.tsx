@@ -112,7 +112,7 @@ class Footer extends Component<FooterProps> {
                       fontFamily={"monospace"}
                       size={300}
                     >
-                      report any issues here
+                      report an issue
                     </Link>
                   </Pane>
                 </button>
