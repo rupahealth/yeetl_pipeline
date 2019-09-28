@@ -190,7 +190,7 @@ async function createContextMenu(
 }
 
 function getRepoTab(tab: browser.tabs.Tab): string {
-  const matches = tab.url.match(/github.com\/([^/]*\/[^/]*)/);
+  const matches = tab.url.match(/^https:\/\/github.com\/([^/]*\/[^/]*)/);
   return matches[1];
 }
 

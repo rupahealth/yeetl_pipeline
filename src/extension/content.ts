@@ -1,4 +1,6 @@
-const matches = window.location.href.match(/github.com\/([^/]*\/[^/]*)/);
+const matches = window.location.href.match(
+  /^https:\/\/github.com\/([^/]*\/[^/]*)/
+);
 let popup: HTMLIFrameElement = null;
 
 document.addEventListener("mousemove", generateMenus);
@@ -29,7 +31,9 @@ browser.runtime.onMessage.addListener(({ subject, path }: any) => {
     }
 
     case "open-repo-or-file": {
-      const matches = window.location.href.match(/github.com\/([^/]*\/[^/]*)/);
+      const matches = window.location.href.match(
+        /^https:\/\/github.com\/([^/]*\/[^/]*)/
+      );
       const repo = matches[1];
 
       if (isFilePage()) {
