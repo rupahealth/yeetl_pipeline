@@ -20,6 +20,6 @@ yarn watch:next # watch and build changes in just next
   - [x] Open from file pages (w/ line numbers?) 📄
   - [x] Open from pull requests 📩
   - [x] Open from inline markdown 🗒
-  - [ ] Keyboard bindings ⌨️
-  - [ ] Settings page ⚙️
+  - [x] Keyboard bindings ⌨️
+  - [x] Settings page ⚙️
 
