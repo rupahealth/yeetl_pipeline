@@ -92,9 +92,9 @@ class EditableLocalPath extends Component<
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Heading size={300}>{"Local Path:"}</Heading>
+          <Heading size={300}>{"Absolute Path:"}</Heading>
           <If condition={!editing}>
-            <Tooltip content={"Edit the local path"}>
+            <Tooltip content={"Edit the absolute path"}>
               <IconButton height={24} onClick={this.focus} icon="edit" />
             </Tooltip>
           </If>

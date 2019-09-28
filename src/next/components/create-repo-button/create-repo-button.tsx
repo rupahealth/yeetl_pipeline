@@ -113,7 +113,7 @@ class CreateRepoButton extends Component<
 
           <TextInputField
             isInvalid={isInvalid(localPath)}
-            label={"Local path"}
+            label={"Absolute path"}
             onChange={(e: any) => this.setState({ localPath: e.target.value })}
             placeholder={"/home/projects/gh-code"}
             required={true}
