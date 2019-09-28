@@ -118,6 +118,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
           </Choose.When>
           <Choose.Otherwise>
             <Heading
+              whiteSpace={"nowrap"}
               marginLeft={minorScale(3)}
               onClick={this.focus}
               cursor={"pointer"}

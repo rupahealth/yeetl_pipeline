@@ -99,7 +99,7 @@ class EditableLocalPath extends Component<
             </Tooltip>
           </If>
         </Pane>
-        <Pane marginTop={minorScale(1)}>
+        <Pane display={"flex"} width={"100%"} marginTop={minorScale(1)}>
           <Choose>
             <Choose.When condition={editing}>
               <ClickOutHandler onClickOut={this.onSubmit}>
@@ -119,9 +119,15 @@ class EditableLocalPath extends Component<
               </ClickOutHandler>
             </Choose.When>
             <Choose.Otherwise>
-              <div onClick={this.focus}>
-                <Text cursor={"pointer"}>{value}</Text>
-              </div>
+              <Text
+                whiteSpace={"nowrap"}
+                onClick={this.focus}
+                overflow={"hidden"}
+                textOverflow={"ellipsis"}
+                cursor={"pointer"}
+              >
+                {value}
+              </Text>
             </Choose.Otherwise>
           </Choose>
         </Pane>
