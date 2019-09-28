@@ -1,7 +1,15 @@
 import { Choose, autoBind, If } from "react-extras";
 import { Component } from "react";
-import { Pane, Paragraph, minorScale, Link, Icon, Tooltip } from "evergreen-ui";
-import { SingletonRouter, withRouter, Router } from "next/router";
+import {
+  Pane,
+  Paragraph,
+  minorScale,
+  Link,
+  Icon,
+  Tooltip,
+  Heading
+} from "evergreen-ui";
+import { SingletonRouter, withRouter } from "next/router";
 
 import { navigate } from "../../utils/navigate.util";
 import { withData } from "../../hocs/with-data";
@@ -19,6 +27,15 @@ class Footer extends Component<FooterProps> {
 
   openTwitter() {
     browser.tabs.create({ active: true, url: "https://twitter.com/maxchehab" });
+    window.close();
+  }
+
+  openIssues() {
+    browser.tabs.create({
+      active: true,
+      url: "https://github.com/maxchehab/gh-code/issues/new"
+    });
+
     window.close();
   }
 
@@ -42,6 +59,7 @@ class Footer extends Component<FooterProps> {
         justifyContent={"center"}
         minHeight={30}
         width={"100%"}
+        borderTop={"1px solid #EDF0F2"}
       >
         <Choose>
           <Choose.When condition={Boolean(footer)}>
@@ -59,7 +77,7 @@ class Footer extends Component<FooterProps> {
             <Pane
               alignItems={"center"}
               display={"flex"}
-              justifyContent={inSettings ? "flex-end" : "space-between"}
+              justifyContent={"space-between"}
               paddingLeft={minorScale(3)}
               paddingRight={minorScale(3)}
               width={"100%"}
@@ -75,6 +93,27 @@ class Footer extends Component<FooterProps> {
                     <Tooltip content="Settings">
                       <Icon size={14} icon="settings" color={"#425A70"} />
                     </Tooltip>
+                  </Pane>
+                </button>
+              </If>
+              <If condition={inSettings}>
+                <button onClick={this.openIssues} style={{ all: "unset" }}>
+                  <Pane
+                    cursor={"pointer"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Icon icon={"issue-new"} color={"#425A70"} size={14} />
+                    <Link
+                      marginLeft={minorScale(2)}
+                      textDecoration={"none"}
+                      color={"neutral"}
+                      fontFamily={"monospace"}
+                      size={300}
+                    >
+                      report any issues here
+                    </Link>
                   </Pane>
                 </button>
               </If>

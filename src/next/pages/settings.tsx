@@ -1,6 +1,6 @@
 import { autoBind } from "react-extras";
 import { Component } from "react";
-import { Pane, minorScale } from "evergreen-ui";
+import { Pane, minorScale, Heading, Link, Icon } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
 import { DeleteLocalStorageButton } from "../components/delete-local-storage-button";
