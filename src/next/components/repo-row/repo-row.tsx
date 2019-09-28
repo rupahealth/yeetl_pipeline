@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { autoBind } from "react-extras";
-import { Button, Table, Pane, Paragraph, minorScale } from "evergreen-ui";
+import { Button, Table, Pane, Paragraph } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
 import { Repo } from "../../../common/interfaces/repo.interface";

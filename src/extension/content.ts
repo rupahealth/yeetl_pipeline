@@ -14,6 +14,8 @@ browser.runtime.onMessage.addListener(({ subject, path }: any) => {
     case "open-popup": {
       path = path.concat("&from=tab");
 
+      console.log(path);
+
       if (isPopup()) {
         popup.src = path;
       } else {
@@ -186,7 +188,7 @@ function insertStyle() {
                   0 3px 6px rgba(0, 0, 0, 0.23);
       background: white;
       border: none;
-      height: 402px;
+      height: 400px;
       position: fixed;
       right: 0;
       top: 0;
