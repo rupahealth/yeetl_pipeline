@@ -27,6 +27,10 @@ loadData();
 browser.commands.onCommand.addListener(async (command: string) => {
   switch (command) {
     case "open-repo-or-file": {
+      if (!DATA.settings.keyboard.enabled) {
+        return;
+      }
+
       const tab = (await browser.tabs.query({
         active: true,
         currentWindow: true
