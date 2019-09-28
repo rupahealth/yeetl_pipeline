@@ -21,6 +21,7 @@ const DataContext = React.createContext({
   findRepo: (_id: string) => null,
   updateRepo: (_repo: Repo) => null,
   updateFooter: (_footer: string) => null,
+  resetStorage: () => null,
   loaded: false,
   footer: null
 });
@@ -106,6 +107,16 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
     this.setState({ footer });
   }
 
+  async resetStorage() {
+    await browser.storage.local.set({
+      data: {
+        repos: {}
+      }
+    });
+
+    return this.setState({ repos: {} });
+  }
+
   render() {
     const { children } = this.props;
     const { repos, loaded, footer } = this.state;
@@ -119,6 +130,7 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
           updateRepo: this.updateRepo,
           findRepo: this.findRepo,
           updateFooter: this.updateFooter,
+          resetStorage: this.resetStorage,
           loaded,
           footer
         }}

@@ -1,22 +1,31 @@
-import { Choose } from "react-extras";
+import { Choose, autoBind } from "react-extras";
 import { Component } from "react";
-import { Pane, Paragraph, minorScale, Icon, Link } from "evergreen-ui";
+import { Pane, Paragraph, minorScale, Link, Icon } from "evergreen-ui";
 
+import { navigate } from "../../utils/navigate.util";
+import { SingletonRouter, withRouter } from "next/router";
 import { withData } from "../../hocs/with-data";
-import { TwitterIcon } from "../twitter-icon";
 
 interface FooterProps {
   footer?: string;
+  router: SingletonRouter;
 }
 
 class Footer extends Component<FooterProps> {
-  openSettings() {
-    alert("settings");
+  constructor(props: FooterProps) {
+    super(props);
+    autoBind(this);
   }
 
   openTwitter() {
     browser.tabs.create({ active: true, url: "https://twitter.com/maxchehab" });
     window.close();
+  }
+
+  openSettings() {
+    const { router } = this.props;
+
+    navigate(router, "/settings");
   }
 
   render() {
@@ -91,4 +100,4 @@ class Footer extends Component<FooterProps> {
   }
 }
 
-export default withData(Footer);
+export default withRouter(withData(Footer));

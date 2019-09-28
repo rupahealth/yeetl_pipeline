@@ -2,9 +2,10 @@ import { autoBind } from "react-extras";
 import { Component, Fragment } from "react";
 import { Dialog, Button, minorScale } from "evergreen-ui";
 
-import { withData } from "../../hocs/with-data";
+import { navigate } from "../../utils/navigate.util";
 import { Repo } from "../../../common/interfaces/repo.interface";
 import { SingletonRouter, withRouter } from "next/router";
+import { withData } from "../../hocs/with-data";
 
 interface DeleteRepoButtonProps {
   deleteRepo(repo: Repo): void;
@@ -33,7 +34,7 @@ class DeleteRepoButton extends Component<
     const { deleteRepo, repo, router } = this.props;
     this.setState({ showPrompt: true }, () => {
       deleteRepo(repo);
-      router.push("/");
+      navigate(router, "/");
     });
   }
 

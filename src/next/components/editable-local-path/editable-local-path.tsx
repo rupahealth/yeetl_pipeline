@@ -1,6 +1,5 @@
 import { autoBind, Choose, If } from "react-extras";
 import { Component, FormEvent } from "react";
-import { withRouter, SingletonRouter } from "next/router";
 import {
   IconButton,
   minorScale,
@@ -10,16 +9,18 @@ import {
   TextInput,
   Tooltip
 } from "evergreen-ui";
+import { SingletonRouter, withRouter } from "next/router";
 import ClickOutHandler from "react-onclickout";
 
-import { withData } from "../../hocs/with-data";
-import { Repo } from "../../../common/interfaces/repo.interface";
 import { Data } from "../../../common/interfaces/data.interface";
+import { navigate } from "../../utils/navigate.util";
+import { Repo } from "../../../common/interfaces/repo.interface";
+import { withData } from "../../hocs/with-data";
 
 interface EditableLocalPathProps extends Data {
   repo: Repo;
-  router: SingletonRouter;
   size: number;
+  router: SingletonRouter;
   updateRepo(repo: Repo): void;
   updateFooter(footer: string): void;
 }
@@ -54,8 +55,7 @@ class EditableLocalPath extends Component<
 
   navigateHome() {
     const { router } = this.props;
-
-    router.push("/");
+    navigate(router, "/");
   }
 
   focus() {

@@ -3,6 +3,7 @@ import { Component, Fragment } from "react";
 import { Dialog, Button, minorScale, TextInputField } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
 
+import { navigate } from "../../utils/navigate.util";
 import { Repo } from "../../../common/interfaces/repo.interface";
 import { withData } from "../../hocs/with-data";
 
@@ -62,10 +63,9 @@ class CreateRepoButton extends Component<
   async createRepo() {
     const { createRepo, router } = this.props;
     const { name, localPath } = this.state;
-    const { from } = router.query;
 
     const { id } = await createRepo({ name, localPath });
-    router.push(`/details?id=${id}&from=${from}`);
+    navigate(router, "/details", { id });
   }
 
   close() {
