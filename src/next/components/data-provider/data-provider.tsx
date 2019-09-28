@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { autoBind } from "react-extras";
 import { ulid } from "ulid";
 
-import { Data } from "../../../common/interfaces/data.interface";
+import { Data, Settings } from "../../../common/interfaces/data.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 interface DataProviderProps {
@@ -14,15 +14,27 @@ interface DataProviderState extends Data {
   footer: string;
 }
 
-const DataContext = React.createContext({
+const DEFAULT_STATE = {
   repos: {},
+  settings: {
+    keyboard: {
+      enabled: false,
+      shortcuts: ["⌘", "⇧ Shift", "G"]
+    }
+  },
+  loaded: false,
+  footer: null
+};
+
+const DataContext = React.createContext({
   createRepo: async (_repo: Partial<Repo>) => null,
   deleteRepo: (_repo: Repo) => null,
   findRepo: (_id: string) => null,
   updateRepo: (_repo: Repo) => null,
   updateFooter: (_footer: string) => null,
-  loaded: false,
-  footer: null
+  resetStorage: () => null,
+  updateSettings: (_settings: Settings) => null,
+  ...DEFAULT_STATE
 });
 
 class DataProvider extends Component<DataProviderProps, DataProviderState> {
@@ -31,11 +43,7 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
 
     autoBind(this);
 
-    this.state = {
-      repos: {},
-      loaded: false,
-      footer: null
-    };
+    this.state = DEFAULT_STATE;
   }
 
   async componentDidMount() {
@@ -45,9 +53,7 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
 
     if (!data) {
       await browser.storage.local.set({
-        data: {
-          repos: {}
-        }
+        data: DEFAULT_STATE
       });
 
       return this.setState({ loaded: true });
@@ -57,15 +63,17 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
   }
 
   updateRepo(repo: Repo) {
+    const { settings } = this.state;
     const repos = Object.assign(this.state.repos, { [repo.id]: repo });
 
     this.setState({ repos });
 
-    const data = { repos } as any;
+    const data = { repos, settings } as any;
     browser.storage.local.set({ data });
   }
 
   async createRepo(repo: Partial<Repo>): Promise<Repo> {
+    const { settings } = this.state;
     const id = ulid();
     repo.id = id;
 
@@ -75,7 +83,7 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
 
     this.setState({ repos });
 
-    const data = { repos } as any;
+    const data = { repos, settings } as any;
     await browser.storage.local.set({ data });
 
     return repo as Repo;
@@ -92,13 +100,14 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
   }
 
   deleteRepo({ id }: Repo) {
+    const { settings } = this.state;
     const repos = Object.assign(this.state.repos, {});
 
     delete repos[id];
 
     this.setState({ repos });
 
-    const data = { repos } as any;
+    const data = { repos, settings } as any;
     browser.storage.local.set({ data });
   }
 
@@ -106,19 +115,39 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
     this.setState({ footer });
   }
 
+  async resetStorage() {
+    await browser.storage.local.set({
+      data: DEFAULT_STATE
+    });
+
+    return this.setState({ repos: {} });
+  }
+
+  async updateSettings(settings: Settings) {
+    const { repos } = this.state;
+
+    this.setState({ settings });
+
+    const data = { repos, settings } as any;
+    await browser.storage.local.set({ data });
+  }
+
   render() {
     const { children } = this.props;
-    const { repos, loaded, footer } = this.state;
+    const { repos, loaded, footer, settings } = this.state;
 
     return (
       <DataContext.Provider
         value={{
+          settings,
           repos,
           createRepo: this.createRepo,
           deleteRepo: this.deleteRepo,
           updateRepo: this.updateRepo,
           findRepo: this.findRepo,
           updateFooter: this.updateFooter,
+          resetStorage: this.resetStorage,
+          updateSettings: this.updateSettings,
           loaded,
           footer
         }}

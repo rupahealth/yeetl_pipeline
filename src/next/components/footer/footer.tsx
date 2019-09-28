@@ -1,17 +1,20 @@
-import { Choose } from "react-extras";
+import { Choose, autoBind, If } from "react-extras";
 import { Component } from "react";
-import { Pane, Paragraph, minorScale, Icon, Link } from "evergreen-ui";
+import { Pane, Paragraph, minorScale, Link, Icon, Tooltip } from "evergreen-ui";
+import { SingletonRouter, withRouter, Router } from "next/router";
 
+import { navigate } from "../../utils/navigate.util";
 import { withData } from "../../hocs/with-data";
-import { TwitterIcon } from "../twitter-icon";
 
 interface FooterProps {
   footer?: string;
+  router: SingletonRouter;
 }
 
 class Footer extends Component<FooterProps> {
-  openSettings() {
-    alert("settings");
+  constructor(props: FooterProps) {
+    super(props);
+    autoBind(this);
   }
 
   openTwitter() {
@@ -19,8 +22,15 @@ class Footer extends Component<FooterProps> {
     window.close();
   }
 
+  openSettings() {
+    const { router } = this.props;
+
+    navigate(router, "/settings");
+  }
+
   render() {
-    const { footer } = this.props;
+    const { footer, router } = this.props;
+    const inSettings = router.pathname === "/settings";
 
     return (
       <Pane
@@ -49,21 +59,25 @@ class Footer extends Component<FooterProps> {
             <Pane
               alignItems={"center"}
               display={"flex"}
-              justifyContent={"space-between"}
+              justifyContent={inSettings ? "flex-end" : "space-between"}
               paddingLeft={minorScale(3)}
               paddingRight={minorScale(3)}
               width={"100%"}
             >
-              <button onClick={this.openSettings} style={{ all: "unset" }}>
-                <Pane
-                  cursor={"pointer"}
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                >
-                  <Icon size={14} icon="settings" color={"#425A70"} />
-                </Pane>
-              </button>
+              <If condition={!inSettings}>
+                <button onClick={this.openSettings} style={{ all: "unset" }}>
+                  <Pane
+                    cursor={"pointer"}
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                  >
+                    <Tooltip content="Settings">
+                      <Icon size={14} icon="settings" color={"#425A70"} />
+                    </Tooltip>
+                  </Pane>
+                </button>
+              </If>
               <button style={{ all: "unset" }} onClick={this.openTwitter}>
                 <Pane
                   cursor={"pointer"}
@@ -71,15 +85,13 @@ class Footer extends Component<FooterProps> {
                   justifyContent={"center"}
                   alignItems={"center"}
                 >
-                  <Paragraph
-                    marginRight={minorScale(1)}
-                    width={"100%"}
+                  <Link
+                    textDecoration={"none"}
+                    color={"neutral"}
+                    fontFamily={"monospace"}
                     size={300}
                   >
-                    {`created by`}
-                  </Paragraph>
-                  <Link color={"neutral"} fontFamily={"monospace"} size={300}>
-                    {`mc`}
+                    made by max
                   </Link>
                 </Pane>
               </button>
@@ -91,4 +103,4 @@ class Footer extends Component<FooterProps> {
   }
 }
 
-export default withData(Footer);
+export default withRouter(withData(Footer));

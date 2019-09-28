@@ -3,6 +3,7 @@ import { autoBind } from "react-extras";
 import { Button, Table, Pane, Paragraph } from "evergreen-ui";
 import { withRouter, SingletonRouter } from "next/router";
 
+import { navigate } from "../../utils/navigate.util";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 interface RepoRowProps {
@@ -31,9 +32,8 @@ class RepoRow extends Component<RepoRowProps> {
 
   editRepo() {
     const { router, repo } = this.props;
-    const { from } = router.query;
 
-    router.push(`/details?id=${repo.id}&from=${from}`);
+    navigate(router, "/details", { id: repo.id });
   }
 
   render() {

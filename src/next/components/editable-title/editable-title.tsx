@@ -11,9 +11,10 @@ import {
 } from "evergreen-ui";
 import ClickOutHandler from "react-onclickout";
 
-import { withData } from "../../hocs/with-data";
-import { Repo } from "../../../common/interfaces/repo.interface";
 import { Data } from "../../../common/interfaces/data.interface";
+import { navigate } from "../../utils/navigate.util";
+import { Repo } from "../../../common/interfaces/repo.interface";
+import { withData } from "../../hocs/with-data";
 
 const footerMessage = "press ⏎ to submit value";
 
@@ -59,9 +60,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
 
   navigateHome() {
     const { router } = this.props;
-    const { from } = router.query;
-
-    router.push(`/?from=${from}`);
+    navigate(router, "/");
   }
 
   onSubmit(e: FormEvent) {

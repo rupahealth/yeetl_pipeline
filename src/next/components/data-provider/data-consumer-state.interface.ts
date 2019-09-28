@@ -1,4 +1,4 @@
-import { Data } from "../../../common/interfaces/data.interface";
+import { Data, Settings } from "../../../common/interfaces/data.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 export interface DataConsumerState extends Data {
@@ -7,6 +7,8 @@ export interface DataConsumerState extends Data {
   createRepo(repo: Partial<Repo>): Promise<Repo>;
   findRepo(id: string): Repo;
   updateFooter(footer: string): void;
+  resetStorage(footer: string): Promise<void>;
+  updateSettings(settings: Settings): Promise<void>;
   loaded: boolean;
   footer: string;
 }
