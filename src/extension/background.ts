@@ -68,11 +68,21 @@ async function openPath(path: string) {
   if (isFirefox()) {
     window.location.href = path;
   } else {
-    const tab = (await browser.tabs.query({})).find(({ active }) => active);
+    try {
+      const tab = (await browser.tabs.query({
+        active: true,
+        currentWindow: true
+      }))[0];
 
-    browser.tabs.executeScript(tab.id, {
-      code: `window.location.href = "${path}";`
-    });
+      await browser.tabs.executeScript(tab.id, {
+        code: `window.location.href = "${path}";`
+      });
+    } catch (error) {
+      browser.tabs.create({
+        active: true,
+        url: path
+      });
+    }
   }
 }
 
