@@ -65,8 +65,6 @@ browser.runtime.onMessage.addListener(async ({ subject, path }: any) => {
 });
 
 async function openPath(path: string) {
-  console.log("opening", path);
-
   if (isFirefox()) {
     window.location.href = path;
   } else {
@@ -85,7 +83,7 @@ async function openRepo(tab: browser.tabs.Tab) {
     const path = `vscode://file${repo.localPath}`;
     openPath(path);
   } else {
-    openPopup({ intent: "create-repo", name }, tab);
+    openPopup({ intent: "create-repo", name: getRepoTab(tab) }, tab);
   }
 }
 
@@ -95,6 +93,8 @@ async function openFile(tab: browser.tabs.Tab, filePath: string) {
   if (repo) {
     const path = `vscode://file${repo.localPath}${filePath}`;
     openPath(path);
+  } else {
+    openPopup({ intent: "create-repo", name: getRepoTab(tab) }, tab);
   }
 }
 
@@ -125,10 +125,14 @@ async function createContextMenu(
   browser.contextMenus.create(options);
 }
 
+function getRepoTab(tab: browser.tabs.Tab): string {
+  const matches = tab.url.match(/github.com\/([^/]*\/[^/]*)/);
+  return matches[1];
+}
+
 function getCurrentRepo(tab: browser.tabs.Tab) {
   const { repos } = DATA;
-  const matches = tab.url.match(/github.com\/([^/]*\/[^/]*)/);
-  const name = matches[1];
+  const name = getRepoTab(tab);
 
   return Object.entries(repos)
     .map(([_key, repo]) => repo)

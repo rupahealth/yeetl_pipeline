@@ -62,9 +62,10 @@ class CreateRepoButton extends Component<
   async createRepo() {
     const { createRepo, router } = this.props;
     const { name, localPath } = this.state;
+    const { from } = router.query;
 
     const { id } = await createRepo({ name, localPath });
-    router.push(`/details?id=${id}`);
+    router.push(`/details?id=${id}&from=${from}`);
   }
 
   close() {
