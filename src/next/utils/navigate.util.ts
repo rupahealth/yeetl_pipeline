@@ -34,8 +34,6 @@ export function navigate(
     .concat("?")
     .concat(queryString.stringify({ from, ...query }));
 
-  console.log({ extensionPath });
-
   router.push(
     { pathname: path, query: { from, ...query } },
     extensionPath.concat()

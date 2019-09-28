@@ -28,5 +28,14 @@
     "default_title": "Github to Code",
     "default_popup": "next/out/index.html",
     "browser_style": true
+  },
+  "commands": {
+    "open-repo-or-file": {
+      "suggested_key": {
+        "default": "Ctrl+G",
+        "mac": "MacCtrl+G"
+      },
+      "description": "Open current repository or file."
+    }
   }
 }

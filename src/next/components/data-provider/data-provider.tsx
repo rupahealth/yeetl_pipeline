@@ -18,8 +18,7 @@ const DEFAULT_STATE = {
   repos: {},
   settings: {
     keyboard: {
-      enabled: false,
-      shortcuts: ["⌘", "⇧ Shift", "G"]
+      enabled: false
     }
   },
   loaded: false,

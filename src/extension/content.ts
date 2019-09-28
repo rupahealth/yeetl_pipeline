@@ -5,16 +5,12 @@ document.addEventListener("mousemove", generateMenus);
 
 generateMenus();
 
-if (!isFirefox()) {
-  insertStyle();
-}
+insertStyle();
 
 browser.runtime.onMessage.addListener(({ subject, path }: any) => {
   switch (subject) {
     case "open-popup": {
       path = path.concat("&from=tab");
-
-      console.log(path);
 
       if (isPopup()) {
         popup.src = path;
@@ -27,6 +23,21 @@ browser.runtime.onMessage.addListener(({ subject, path }: any) => {
     case "close-popup": {
       if (isPopup()) {
         removePopup();
+      }
+
+      break;
+    }
+
+    case "open-repo-or-file": {
+      const matches = window.location.href.match(/github.com\/([^/]*\/[^/]*)/);
+      const repo = matches[1];
+
+      if (isFilePage()) {
+        const branch = getBranch();
+        const file = window.location.href.split(branch)[1];
+        browser.runtime.sendMessage({ subject: "open-file", repo, file });
+      } else {
+        browser.runtime.sendMessage({ subject: "open-repo", repo });
       }
 
       break;
@@ -144,7 +155,7 @@ function getPathFromCodeSample(element: HTMLElement) {
 }
 
 function getBranch(): string {
-  const matches = document.title.match(/at (\w*)/);
+  const matches = document.title.match(/at (\S*)/);
 
   if (matches) {
     return matches[1];
@@ -198,8 +209,4 @@ function insertStyle() {
   `;
 
   document.head.appendChild(style);
-}
-
-function isFirefox() {
-  return navigator.userAgent.indexOf("Firefox/") !== -1;
 }

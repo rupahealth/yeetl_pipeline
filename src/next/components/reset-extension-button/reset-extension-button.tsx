@@ -5,21 +5,21 @@ import { Dialog, Button, minorScale } from "evergreen-ui";
 import { withData } from "../../hocs/with-data";
 import { SingletonRouter, withRouter } from "next/router";
 
-interface DeleteLocalStorageButtonProps {
+interface ResetExtensionButtonProps {
   resetStorage(): Promise<void>;
   router: SingletonRouter;
   closeSettings(): void;
 }
 
-interface DeleteLocalStorageButtonState {
+interface ResetExtensionButtonState {
   showPrompt: boolean;
 }
 
-class DeleteLocalStorageButton extends Component<
-  DeleteLocalStorageButtonProps,
-  DeleteLocalStorageButtonState
+class ResetExtensionButton extends Component<
+  ResetExtensionButtonProps,
+  ResetExtensionButtonState
 > {
-  constructor(props: DeleteLocalStorageButtonProps) {
+  constructor(props: ResetExtensionButtonProps) {
     super(props);
     autoBind(this);
 
@@ -44,10 +44,10 @@ class DeleteLocalStorageButton extends Component<
         <Dialog
           intent={"danger"}
           isShown={showPrompt}
-          title={"Delete Local Storage"}
+          title={"Reset Extension"}
           onCloseComplete={() => this.setState({ showPrompt: false })}
           onConfirm={this.delete}
-          confirmLabel={"Delete"}
+          confirmLabel={"Reset"}
         >
           This action cannot be undone. This will permanently delete all saved
           data and reset the extension.
@@ -59,11 +59,11 @@ class DeleteLocalStorageButton extends Component<
           marginTop={minorScale(3)}
           onClick={() => this.setState({ showPrompt: true })}
         >
-          Delete local storage
+          Reset Extension
         </Button>
       </Fragment>
     );
   }
 }
 
-export default withRouter(withData(DeleteLocalStorageButton));
+export default withRouter(withData(ResetExtensionButton));
