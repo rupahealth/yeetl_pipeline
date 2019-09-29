@@ -18,7 +18,7 @@ Allows developers open repositories from github.com inside their VS Code editor.
 
 _Created with [🌲Evergreen](https://evergreen.segment.io) + [nextjs](https://nextjs.org/) + [Typescript](http://www.typescriptlang.org/)_
 
-## 💡 Features 
+## Features 💡 
 
 ### Custom keyboard shortcut ⌨️  
 <p align="left">
