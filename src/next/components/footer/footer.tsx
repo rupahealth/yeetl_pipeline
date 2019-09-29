@@ -33,7 +33,8 @@ class Footer extends Component<FooterProps> {
   openIssues() {
     browser.tabs.create({
       active: true,
-      url: "https://github.com/maxchehab/gh-code/issues/new"
+      url:
+        "https://github.com/maxchehab/gh-code/issues/new?assignees=maxchehab&labels=bug&template=bug_report.md&title="
     });
 
     window.close();
