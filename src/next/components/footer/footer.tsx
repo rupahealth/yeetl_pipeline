@@ -7,7 +7,7 @@ import {
   Link,
   Icon,
   Tooltip,
-  Heading
+  Position
 } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
 
@@ -90,7 +90,7 @@ class Footer extends Component<FooterProps> {
                     justifyContent={"center"}
                     alignItems={"center"}
                   >
-                    <Tooltip content="Settings">
+                    <Tooltip content="Settings" position={Position.RIGHT}>
                       <Icon size={14} icon="settings" color={"#425A70"} />
                     </Tooltip>
                   </Pane>

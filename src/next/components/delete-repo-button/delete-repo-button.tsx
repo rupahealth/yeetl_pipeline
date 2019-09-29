@@ -46,7 +46,7 @@ class DeleteRepoButton extends Component<
         <Dialog
           intent={"danger"}
           isShown={showPrompt}
-          title={"Delete Repository"}
+          title={"Delete Configuration"}
           onCloseComplete={() => this.setState({ showPrompt: false })}
           onConfirm={this.deleteRepo}
           confirmLabel={"Delete"}
@@ -61,7 +61,7 @@ class DeleteRepoButton extends Component<
           marginTop={minorScale(3)}
           onClick={() => this.setState({ showPrompt: true })}
         >
-          Delete Repository
+          Delete Configuration
         </Button>
       </Fragment>
     );
