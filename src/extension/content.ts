@@ -1,25 +1,18 @@
 const matches = window.location.href.match(
   /^https:\/\/github.com\/([^/]*\/[^/]*)/
 );
-let popup: HTMLIFrameElement = null;
 
 document.addEventListener("mousemove", generateMenus);
 
 generateMenus();
-
 insertStyle();
+
+const popup: HTMLIFrameElement = insertPopup();
 
 browser.runtime.onMessage.addListener(({ subject, path }: any) => {
   switch (subject) {
     case "open-popup": {
-      path = path.concat("&from=tab");
-
-      if (isPopup()) {
-        popup.src = path;
-      } else {
-        popup = insertPopup(path);
-      }
-
+      openPopup();
       break;
     }
     case "close-popup": {
@@ -175,19 +168,29 @@ function pathFromFileRow(row: HTMLTableRowElement): string {
   return href.split(branch)[1];
 }
 
+function openPopup() {
+  popup.className = "open";
+}
+
 function removePopup() {
-  document.body.removeChild(popup);
-  popup = null;
+  popup.className = "";
 }
 
 function isPopup(): boolean {
   return Boolean(document.getElementById("gh-code-popup"));
 }
 
-function insertPopup(path: string): HTMLIFrameElement {
+function insertPopup(): HTMLIFrameElement {
   const popup = document.createElement("iframe");
 
-  popup.src = path;
+  const matches = window.location.href.match(
+    /^https:\/\/github.com\/([^/]*\/[^/]*)/
+  );
+  const repo = matches[1];
+
+  popup.src = browser.extension.getURL(
+    `next/out/index.html?intent=create-repo&name=${repo}`
+  );
   popup.id = "gh-code-popup";
 
   document.body.appendChild(popup);
@@ -203,12 +206,17 @@ function insertStyle() {
                   0 3px 6px rgba(0, 0, 0, 0.23);
       background: white;
       border: none;
-      height: 400px;
       position: fixed;
       right: 0;
       top: 0;
-      width: 327px;
       z-index: 9999;
+      height:0;
+      width:0;
+    }
+
+    #gh-code-popup.open {
+      height: 400px;
+      width: 327px;
     }
   `;
 
