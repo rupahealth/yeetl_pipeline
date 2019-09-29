@@ -46,9 +46,8 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
 
     this.setState({ editing: true }, () => {
       setTimeout(() => updateFooter(footerMessage), 10);
+      this.input.focus && this.input.focus();
     });
-
-    this.input.focus && this.input.focus();
   }
 
   updateName(value: string) {
@@ -95,6 +94,7 @@ class EditableTitle extends Component<EditableTitleProps, EditableTitleState> {
           <Choose.When condition={editing}>
             <ClickOutHandler onClickOut={this.onSubmit}>
               <form
+                onBlur={this.onSubmit}
                 onSubmit={this.onSubmit}
                 style={{
                   display: "flex-inline",

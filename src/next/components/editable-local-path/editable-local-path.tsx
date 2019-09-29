@@ -63,9 +63,8 @@ class EditableLocalPath extends Component<
 
     this.setState({ editing: true }, () => {
       setTimeout(() => updateFooter(footerMessage), 10);
+      this.input.focus && this.input.focus();
     });
-
-    this.input.focus && this.input.focus();
   }
 
   onSubmit(e: FormEvent) {
@@ -103,7 +102,7 @@ class EditableLocalPath extends Component<
           <Choose>
             <Choose.When condition={editing}>
               <ClickOutHandler onClickOut={this.onSubmit}>
-                <form onSubmit={this.onSubmit}>
+                <form onBlur={this.onSubmit} onSubmit={this.onSubmit}>
                   <TextInput
                     innerRef={(ref: HTMLInputElement) => {
                       this.input = ref;
