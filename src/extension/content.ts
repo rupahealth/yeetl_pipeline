@@ -173,7 +173,15 @@ function openPopup() {
 }
 
 function removePopup() {
+  const matches = window.location.href.match(
+    /^https:\/\/github.com\/([^/]*\/[^/]*)/
+  );
+  const repo = matches[1];
+
   popup.className = "";
+  popup.src = browser.extension.getURL(
+    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
+  );
 }
 
 function isPopup(): boolean {
@@ -189,7 +197,7 @@ function insertPopup(): HTMLIFrameElement {
   const repo = matches[1];
 
   popup.src = browser.extension.getURL(
-    `next/out/index.html?intent=create-repo&name=${repo}`
+    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
   );
   popup.id = "gh-code-popup";
 
