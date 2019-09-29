@@ -8,19 +8,19 @@ Allows developers open repositories from github.com inside their VS Code editor.
 
 _Created with [🌲Evergreen](https://evergreen.segment.io) + [nextjs](https://nextjs.org/) + [Typescript](http://www.typescriptlang.org/)_
 
-## 💡Features 
+## 💡 Features 
 
-###  ⌨️ Custom keyboard shortcut
-<p align="center">
+### Custom keyboard shortcut ⌨️  
+<p align="left">
   <img width="720"  src="/gifs/keyboard-shortcut.gif">
 </p>
 
-### 📋 Open from code review
+### Open from code review 📋
 <p align="center">
   <img width="720"  src="/gifs/open-from-code-review.gif">
 </p>
 
-### 🏎️ Fast setup 
+### Fast setup  🏎️ 
 <p align="center">
   <img width="720"  src="/gifs/open-from-file.gif">
 </p>
