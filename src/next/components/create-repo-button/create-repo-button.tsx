@@ -213,6 +213,7 @@ class CreateRepoButton extends Component<
           </If>
 
           <TextInputField
+            autoFocus={showDefaultName}
             isInvalid={!pathValidation.valid}
             label={
               <Pane display={"flex"} alignItems={"center"}>

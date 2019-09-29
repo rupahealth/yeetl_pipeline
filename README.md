@@ -1,25 +1,38 @@
-# gh-code
+# GitHub to Code
 
-Browser extension with [Typescript](http://www.typescriptlang.org/) + [nextjs](https://nextjs.org/)
+Allows developers open repositories from github.com inside their VS Code editor.
+
+<p align="center">
+  <img width="720"  src="/gifs/open-from-diff.gif">
+</p>
+
+_Created with [🌲Evergreen](https://evergreen.segment.io) + [nextjs](https://nextjs.org/) + [Typescript](http://www.typescriptlang.org/)_
+
+## 💡Features 
+
+###  ⌨️ Custom keyboard shortcut
+<p align="center">
+  <img width="720"  src="/gifs/keyboard-shortcut.gif">
+</p>
+
+### 📋 Open from code review
+<p align="center">
+  <img width="720"  src="/gifs/open-from-diff.gif">
+</p>
+
+### 🏎️ Fast setup 
+<p align="center">
+  <img width="720"  src="/gifs/create-configuration.gif">
+</p>
+
 
 ## Development 🛠️
 
 ```bash
-yarn build:all  # build extension + next
+yarn build:all  # build extension + popup
 yarn build:ext  # build just the extension
-yarn build:next # build just next
+yarn build:next # build just popup
 
 yarn watch:ext  # watch and build changes in just extension
-yarn watch:next # watch and build changes in just next
+yarn watch:next # watch and build changes in just popup
 ```
-
-## Roadmap 🛣️
-  - [x] Chrome support 🌐
-  - [x] Firefox support 🦊
-  - [x] Open from directories 🗄
-  - [x] Open from file pages (w/ line numbers?) 📄
-  - [x] Open from pull requests 📩
-  - [x] Open from inline markdown 🗒
-  - [x] Keyboard bindings ⌨️
-  - [x] Settings page ⚙️
-
