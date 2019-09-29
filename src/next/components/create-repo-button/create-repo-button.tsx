@@ -4,11 +4,10 @@ import { Dialog, Button, minorScale, TextInputField } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
 
 import { navigate } from "../../utils/navigate.util";
-import { Repo } from "../../../common/interfaces/repo.interface";
 import { withData } from "../../hocs/with-data";
+import { DataConsumerState } from "../data-provider/data-consumer-state.interface";
 
-interface CreateRepoButtonProps {
-  createRepo(repo: Partial<Repo>): Promise<Repo>;
+interface CreateRepoButtonProps extends DataConsumerState {
   router: SingletonRouter;
   value?: string;
   hasIcon?: boolean;
@@ -22,14 +21,6 @@ interface CreateRepoButtonState {
   name: string;
   localPath: string;
 }
-
-const isInvalid = (value: string | null) => {
-  if (value === null) {
-    return false;
-  }
-
-  return value.length === 0;
-};
 
 const empty = (value: string | null) => {
   return value === null || value.length === 0;
@@ -68,6 +59,50 @@ class CreateRepoButton extends Component<
     navigate(router, "/details", { id });
   }
 
+  validation(value: string | null, field: "name" | "path") {
+    const { repos } = this.props;
+
+    const repo = Object.entries(repos)
+      .map(([_key, repo]) => repo)
+      .find(repo => repo.name === value);
+
+    if (empty(value)) {
+      return { valid: false, message: "This field is required." };
+    }
+
+    switch (field) {
+      case "name": {
+        if (repo) {
+          return {
+            valid: false,
+            message: "This repository is already configured."
+          };
+        }
+        break;
+      }
+
+      case "path": {
+        if (value.match(/^~/)) {
+          return {
+            valid: false,
+            message: "The path must be absolute."
+          };
+        }
+
+        if (value.match(/^[^\/]/)) {
+          return {
+            valid: false,
+            message: "The path must start with '/'."
+          };
+        }
+
+        break;
+      }
+    }
+
+    return { valid: true, message: undefined };
+  }
+
   close() {
     this.setState({
       showPrompt: false,
@@ -84,7 +119,9 @@ class CreateRepoButton extends Component<
       justModal = false
     } = this.props;
     const { showPrompt, name, localPath } = this.state;
-    const isConfirmDisabled = empty(name) || empty(localPath);
+    const nameValidation = this.validation(name, "name");
+    const pathValidation = this.validation(localPath, "path");
+    const isConfirmDisabled = !pathValidation.valid || !nameValidation.valid;
 
     return (
       <Fragment>
@@ -100,27 +137,23 @@ class CreateRepoButton extends Component<
         >
           <TextInputField
             autoFocus={true}
-            isInvalid={isInvalid(name)}
+            isInvalid={!nameValidation.valid}
             label={"Name"}
             onChange={(e: any) => this.setState({ name: e.target.value })}
             placeholder={"maxchehab/gh-code"}
             required={true}
             value={name}
-            validationMessage={
-              isInvalid(name) ? "This field is required" : undefined
-            }
+            validationMessage={nameValidation.message}
           />
 
           <TextInputField
-            isInvalid={isInvalid(localPath)}
+            isInvalid={!pathValidation.valid}
             label={"Absolute path"}
             onChange={(e: any) => this.setState({ localPath: e.target.value })}
             placeholder={"/home/projects/gh-code"}
             required={true}
             value={localPath}
-            validationMessage={
-              isInvalid(localPath) ? "This field is required" : undefined
-            }
+            validationMessage={pathValidation.message}
           />
         </Dialog>
         <If condition={!justModal}>
