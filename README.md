@@ -16,12 +16,12 @@ _Created with [🌲Evergreen](https://evergreen.segment.io) + [nextjs](https://n
 </p>
 
 ### Open from code review 📋
-<p align="center">
+<p align="left">
   <img width="720"  src="/gifs/from-code-review.gif">
 </p>
 
 ### Fast setup  🏎️ 
-<p align="center">
+<p align="left">
   <img width="720"  src="/gifs/fast-config.gif">
 </p>
 
