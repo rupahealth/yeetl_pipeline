@@ -7,7 +7,7 @@ Allows developers open repositories from github.com inside their VS Code editor.
     <img style="margin-right: 50px" width="200" src="/images/firefox-addon-icon.png">
   </a>
   
-  <a href=" https://chrome.google.com/webstore/detail/github-to-code/nmhejamhnhhhegjaalgklaeeladhkaph">
+  <a href="https://chrome.google.com/webstore/detail/github-to-code/nmhejamhnhhhegjaalgklaeeladhkaph">
     <img style="border: 1px solid black; border-radius: 18px;" width="200" src="/images/chrome-extension-icon.png">
   </a>
 </p>
