@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "GitHub to Code",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Allows developers to open GitHub repositories locally within Visual Studio Code.",
   "icons": {
     "48": "icons/code-logo.png"

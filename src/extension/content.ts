@@ -185,7 +185,7 @@ function removePopup() {
 }
 
 function isPopup(): boolean {
-  return Boolean(document.getElementById("gh-code-popup"));
+  return popup.className === "open";
 }
 
 function insertPopup(): HTMLIFrameElement {

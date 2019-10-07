@@ -158,16 +158,7 @@ class CreateRepoButton extends Component<
           isShown={showPrompt}
           onCancel={this.close}
           onConfirm={this.createRepo}
-          title={
-            <Heading
-              size={600}
-              whiteSpace={"nowrap"}
-              overflow={"hidden"}
-              textOverflow={"ellipsis"}
-            >
-              {title}
-            </Heading>
-          }
+          title={title}
           onCloseComplete={this.close}
         >
           <If condition={!showDefaultName}>
