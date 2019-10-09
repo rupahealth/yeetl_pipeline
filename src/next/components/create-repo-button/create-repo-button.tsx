@@ -110,10 +110,10 @@ class CreateRepoButton extends Component<
           };
         }
 
-        if (value.match(/^[^\/]/)) {
+        if (value.match(/^[^\/]/) && !value.match(/^[a-zA-Z]:\\/)) {
           return {
             valid: false,
-            message: "The path must start with '/'."
+            message: "The path must start with '/' or be valid Windows path."
           };
         }
 
@@ -217,7 +217,7 @@ class CreateRepoButton extends Component<
                       <Strong>For example:</Strong>
                       <UnorderedList paddingLeft={minorScale(1)}>
                         <ListItem icon="tick-circle" iconColor="success">
-                          /users/satoshi/bitcoin
+                          C:\users\satoshi\bitcoin
                         </ListItem>
                         <ListItem icon="tick-circle" iconColor="success">
                           /go/src/github.com/golang
