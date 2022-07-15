@@ -2,14 +2,15 @@ import { Component } from "react";
 import { autoBind } from "react-extras";
 
 import { CreateRepoButton } from "../components/create-repo-button";
+import { PipelineList } from "../components/pipeline-list";
 import { Popup } from "../components/popup";
 import { RepoList } from "../components/repo-list";
 import { SearchBar } from "../components/search-bar";
+import { Pipeline } from "../../common/interfaces/pipeline.interface";
+import { ResultsList } from "../components/results-list";
 
 interface IndexState {
-  search: string;
-  intent: string;
-  name: string;
+  pipelines: Pipeline[];
 }
 
 // const query = (queryString: string) => {
@@ -31,9 +32,7 @@ export default class Index extends Component<any, IndexState> {
     super(props);
 
     this.state = {
-      search: "",
-      intent: null,
-      name: null,
+      pipelines: [],
     };
 
     autoBind(this);
@@ -42,8 +41,24 @@ export default class Index extends Component<any, IndexState> {
   searchInput: HTMLInputElement;
 
   componentDidMount() {
+    const pipeline: Pipeline = {
+      name: "Really Cool Pipeline",
+      configuration: {
+        table: `//id="table0"`,
+        extractConfig: [
+          {
+            from: 3,
+            to: "Patient",
+          },
+          {
+            from: 7,
+            to: "Patient",
+          },
+        ],
+      },
+    };
     // const { intent, name } = query(window.location.search);
-    // this.setState({ intent, name });
+    this.setState({ pipelines: [pipeline] });
   }
 
   // onSearch(search: string) {
@@ -58,11 +73,15 @@ export default class Index extends Component<any, IndexState> {
   //   }
   // }
 
+  pipelines = [{}];
+
   render() {
-    // const { search, intent, name } = this.state;
+    const { pipelines } = this.state;
 
     return (
       <Popup>
+        {/* <PipelineList pipelines={pipelines} /> */}
+        <ResultsList connectedRecords={[]} unmatchedRecords={[]} />
         {/* <CreateRepoButton
           justModal={true}
           showInitially={intent === "create-repo"}
