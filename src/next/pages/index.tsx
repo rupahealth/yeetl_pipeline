@@ -80,7 +80,7 @@ export default class Index extends Component<any, IndexState> {
 
     return (
       <Popup>
-        {/* <PipelineList pipelines={pipelines} /> */}
+        <PipelineList pipelines={pipelines} />
         <ResultsList connectedRecords={[]} unmatchedRecords={[]} />
         {/* <CreateRepoButton
           justModal={true}

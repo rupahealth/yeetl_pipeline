@@ -141,7 +141,7 @@ class Footer extends Component<FooterProps> {
         </Choose> */}
         <Button
           appearance={"primary"}
-          onClick={() => console.log("Clicked")}
+          onClick={() => router.push("/pipeline/new")}
           style={{
             width: "100%",
             height: "100%",

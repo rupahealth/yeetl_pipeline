@@ -3,7 +3,6 @@ import { Component, Fragment } from "react";
 import {
   Button,
   Dialog,
-  Heading,
   Icon,
   Label,
   ListItem,
@@ -13,7 +12,7 @@ import {
   Strong,
   TextInputField,
   Tooltip,
-  UnorderedList
+  UnorderedList,
 } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
 
@@ -51,12 +50,12 @@ class CreateRepoButton extends Component<
     this.state = {
       showPrompt: false,
       name: null,
-      localPath: null
+      localPath: null,
     };
   }
 
   componentDidUpdate({
-    showInitially: oldShowInitially
+    showInitially: oldShowInitially,
   }: CreateRepoButtonProps) {
     const { showInitially, defaultName } = this.props;
 
@@ -78,7 +77,7 @@ class CreateRepoButton extends Component<
 
     const repo = Object.entries(repos)
       .map(([_key, repo]) => repo)
-      .find(repo => repo.name === value);
+      .find((repo) => repo.name === value);
 
     if (empty(value)) {
       return { valid: false, message: "This field is required." };
@@ -89,14 +88,14 @@ class CreateRepoButton extends Component<
         if (repo) {
           return {
             valid: false,
-            message: "This repository is already configured."
+            message: "This repository is already configured.",
           };
         }
 
         if (!value.match(/^([^/]+\/[^/]+)$/)) {
           return {
             valid: false,
-            message: "This must be a valid repository name."
+            message: "This must be a valid repository name.",
           };
         }
         break;
@@ -106,14 +105,14 @@ class CreateRepoButton extends Component<
         if (value.match(/^~/)) {
           return {
             valid: false,
-            message: "The path must be absolute."
+            message: "The path must be absolute.",
           };
         }
 
         if (value.match(/^[^\/]/) && !value.match(/^[a-zA-Z]:\\/)) {
           return {
             valid: false,
-            message: "The path must start with '/' or be valid Windows path."
+            message: "The path must start with '/' or be valid Windows path.",
           };
         }
 
@@ -128,7 +127,7 @@ class CreateRepoButton extends Component<
     this.setState({
       showPrompt: false,
       name: null,
-      localPath: null
+      localPath: null,
     });
   }
 
@@ -137,7 +136,7 @@ class CreateRepoButton extends Component<
       value = "New",
       hasIcon = true,
       defaultName = null,
-      justModal = false
+      justModal = false,
     } = this.props;
 
     const { showPrompt, name, localPath } = this.state;

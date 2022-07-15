@@ -27,7 +27,7 @@ loadData();
 browser.commands.onCommand.addListener(async (command: string) => {
   switch (command) {
     case "toggle-popup":
-      togglePopup()
+      // togglePopup()
       break
   }
 });
