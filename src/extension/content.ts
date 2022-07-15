@@ -10,41 +10,24 @@ insertStyle();
 const popup: HTMLIFrameElement = insertPopup();
 
 browser.runtime.onMessage.addListener(({ subject, path }: any) => {
+  console.log("received message", { subject })
+
   switch (subject) {
-    case "open-popup": {
-      openPopup();
-      break;
+    case "start-recording": {
+      console.log("calling startRecording()")
+      startRecording()
+      break
     }
-    case "close-popup": {
-      if (isPopup()) {
-        removePopup();
-      }
-
-      break;
+    case "stop-recording": {
+      console.log("calling stopRecording()")
+      stopRecording()
+      break
     }
-
-    case "open-repo-or-file": {
-      const matches = window.location.href.match(
-        /^https:\/\/github.com\/([^/]*\/[^/]*)/
-      );
-      const repo = matches[1];
-
-      if (isFilePage()) {
-        const branch = getBranch();
-        const file = window.location.href.split(branch)[1];
-        browser.runtime.sendMessage({ subject: "open-file", repo, file });
-      } else {
-        browser.runtime.sendMessage({ subject: "open-repo", repo });
-      }
-
-      break;
+    case "toggle-popup": {
+      console.log("calling togglePopup()")
+      togglePopup()
+      break
     }
-  }
-});
-
-document.addEventListener("click", () => {
-  if (isPopup()) {
-    removePopup();
   }
 });
 
@@ -63,6 +46,101 @@ function getParentRow(child: HTMLElement): HTMLTableRowElement {
     }
   }
 }
+
+
+function getElementIndex(element: HTMLTableCellElement): number {
+  let index = 0
+
+  for (const child of Array.from(element.parentElement.children)) {
+    if (child === element) {
+      return index
+    }
+    index++
+  }
+}
+
+function getTableBodyContainerSelector(element: HTMLTableCellElement): string {
+  const parent = element.parentElement.parentElement
+  return getXPath(parent)
+}
+
+
+// https://github.com/thiagodp/get-xpath/blob/master/src/index.ts
+function getXPath(el: any): string {
+  let nodeElem = el;
+  if (nodeElem && nodeElem.id) {
+    return "//*[@id=\"" + nodeElem.id + "\"]";
+  }
+  let parts: string[] = [];
+  while (nodeElem && Node.ELEMENT_NODE === nodeElem.nodeType) {
+    let nbOfPreviousSiblings = 0;
+    let hasNextSiblings = false;
+    let sibling = nodeElem.previousSibling;
+    while (sibling) {
+      if (sibling.nodeType !== Node.DOCUMENT_TYPE_NODE &&
+        sibling.nodeName === nodeElem.nodeName) {
+        nbOfPreviousSiblings++;
+      }
+      sibling = sibling.previousSibling;
+    }
+    sibling = nodeElem.nextSibling;
+    while (sibling) {
+      if (sibling.nodeName === nodeElem.nodeName) {
+        hasNextSiblings = true;
+        break;
+      }
+      sibling = sibling.nextSibling;
+    }
+    let prefix = nodeElem.prefix ? nodeElem.prefix + ":" : "";
+    let nth = nbOfPreviousSiblings || hasNextSiblings
+      ? "[" + (nbOfPreviousSiblings + 1) + "]"
+      : "";
+    parts.push(prefix + nodeElem.localName + nth);
+    nodeElem = nodeElem.parentNode;
+  }
+  return parts.length ? "/" + parts.reverse().join("/") : "";
+}
+
+
+// https://stackoverflow.com/a/28031333
+function getXPathForElement(el, xml) {
+  var xpath = '';
+  var pos, tempitem2;
+
+  while (el !== xml.documentElement) {
+    pos = 0;
+    tempitem2 = el;
+    while (tempitem2) {
+      if (tempitem2.nodeType === 1 && tempitem2.nodeName === el.nodeName) { // If it is ELEMENT_NODE of the same name
+        pos += 1;
+      }
+      tempitem2 = tempitem2.previousSibling;
+    }
+
+    xpath = "*[name()='" + el.nodeName + "' and namespace-uri()='" + (el.namespaceURI === null ? '' : el.namespaceURI) + "'][" + pos + ']' + '/' + xpath;
+
+    el = el.parentNode;
+  }
+  xpath = '/*' + "[name()='" + xml.documentElement.nodeName + "' and namespace-uri()='" + (el.namespaceURI === null ? '' : el.namespaceURI) + "']" + '/' + xpath;
+  xpath = xpath.replace(/\/$/, '');
+  return xpath;
+}
+
+document.addEventListener('click', (e) => {
+  const recording = document.body.classList.contains("recording")
+  if (recording) {
+    const target = e.target as HTMLTableCellElement
+
+    if (target.tagName === "TD") {
+      const index = getElementIndex(target)
+      const selector = getTableBodyContainerSelector(target)
+      console.log("Index", index)
+      console.log("Table Selector", selector)
+
+      popup.contentWindow.postMessage({ subject: 'recording-result', data: { cell_index: index, parent_selector: selector } }, '*')
+    }
+  }
+})
 
 function generateMessage(event?: MouseEvent) {
   if (matches) {
@@ -168,36 +246,14 @@ function pathFromFileRow(row: HTMLTableRowElement): string {
   return href.split(branch)[1];
 }
 
-function openPopup() {
-  popup.className = "open";
-}
-
-function removePopup() {
-  const matches = window.location.href.match(
-    /^https:\/\/github.com\/([^/]*\/[^/]*)/
-  );
-  const repo = matches[1];
-
-  popup.className = "";
-  popup.src = browser.extension.getURL(
-    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
-  );
-}
-
 function isPopup(): boolean {
   return popup.className === "open";
 }
 
 function insertPopup(): HTMLIFrameElement {
   const popup = document.createElement("iframe");
-
-  const matches = window.location.href.match(
-    /^https:\/\/github.com\/([^/]*\/[^/]*)/
-  );
-  const repo = matches[1];
-
   popup.src = browser.extension.getURL(
-    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
+    `next/out/index.html`
   );
   popup.id = "gh-code-popup";
 
@@ -224,9 +280,33 @@ function insertStyle() {
 
     #gh-code-popup.open {
       height: 400px;
-      width: 327px;
+      width: 500px;
+    }
+
+    body.recording td:hover {
+      border: 1px solid red !important;
     }
   `;
 
   document.head.appendChild(style);
+}
+
+function togglePopup() {
+  if (popup.classList.contains("open")) {
+    popup.classList.remove("open")
+  } else {
+    popup.classList.add("open")
+  }
+}
+
+function startRecording() {
+  if (!document.body.classList.contains("recording")) {
+    document.body.classList.add("recording")
+  }
+}
+
+function stopRecording() {
+  if (document.body.classList.contains("recording")) {
+    document.body.classList.remove("recording")
+  }
 }

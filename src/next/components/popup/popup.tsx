@@ -4,6 +4,7 @@ import Head from "next/head";
 
 import { DataProvider } from "../data-provider";
 import { Footer } from "../footer";
+import { Header } from "../header";
 
 interface PopupProps {
   children: JSX.Element | JSX.Element[];
@@ -15,7 +16,9 @@ export class Popup extends Component<PopupProps> {
     const fromTab = window.location.href.match(/from=tab/);
 
     if (!fromTab) {
-      browser.runtime.sendMessage({ subject: "close-popup" });
+      browser.runtime.sendMessage({
+        subject: "close-popup from " + window.location.href,
+      });
     }
   }
 
@@ -38,23 +41,24 @@ export class Popup extends Component<PopupProps> {
         <DataProvider>
           <Pane
             height={400}
-            width={325}
+            width={500}
             overflowX={"hidden"}
             display={"flex"}
             alignItems={"vertical"}
             flexFlow={"column"}
           >
+            <Header />
             <Pane
               {...this.props}
               flexGrow={1}
               display={"flex"}
               alignItems={"vertical"}
               flexFlow={"column"}
-              minHeight={0}
+              height={400}
+              overflowY={"scroll"}
             >
               {children}
             </Pane>
-            <Footer />
           </Pane>
         </DataProvider>
       </Fragment>

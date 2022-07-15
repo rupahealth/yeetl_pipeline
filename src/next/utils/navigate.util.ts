@@ -3,13 +3,9 @@ import queryString from "query-string";
 
 export function navigate(
   router: SingletonRouter,
-  path: "/settings" | "/details" | "/",
+  path: "/" | "/results" | "/pipeline-editor" | "/pipeline/new",
   query?: any
 ) {
-  const { from } = router.query;
-  const url = `${path}?from=${from}&${query}`;
-
-  console.log("navigating:", url);
 
   let extensionPath: string = path;
 
@@ -19,23 +15,32 @@ export function navigate(
       break;
     }
 
-    case "/details": {
-      extensionPath = browser.extension.getURL("/next/out/details.html");
+    case "/results": {
+      extensionPath = browser.extension.getURL("/next/out/results.html");
       break;
     }
 
-    case "/settings": {
-      extensionPath = browser.extension.getURL("/next/out/settings.html");
+    case "/pipeline-editor": {
+      extensionPath = browser.extension.getURL(
+        "/next/out/pipeline-editor.html"
+      );
+      break;
+    }
+
+    case "/pipeline/new": {
+      extensionPath = browser.extension.getURL("/next/out/new.html");
       break;
     }
   }
 
   extensionPath = extensionPath
     .concat("?")
-    .concat(queryString.stringify({ from, ...query }));
+    .concat(queryString.stringify(query));
+
+  console.log(extensionPath)
 
   router.push(
-    { pathname: path, query: { from, ...query } },
+    { pathname: path, query },
     extensionPath.concat()
   );
 }
