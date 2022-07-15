@@ -71,6 +71,7 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
   }
 
   createPipeline(pipeline: Partial<Pipeline>): Pipeline {
+    console.log("9999999999999");
     const { pipelines } = this.state;
     const id = ulid();
     pipeline.id = id;

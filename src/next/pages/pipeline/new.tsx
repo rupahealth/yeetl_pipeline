@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { withRouter } from "next/router";
+import { FC, useEffect, useState } from "react";
+import { Pipeline } from "../../../common/interfaces/pipeline.interface";
 import { Popup } from "../../components/popup";
+import { withData } from "../../hocs/with-data";
 
 const INITIAL_STATE = {
+  name: "New Pipeline",
   model: "orderedtest",
   table: "//id='10asdf'",
   transformations: [
@@ -96,7 +100,12 @@ const ExtractTransformationRow = ({
   );
 };
 
-const NewPipelinePage = () => {
+type NewPipelinePageProps = {
+  createPipeline: (pipeline: Partial<Pipeline>) => void;
+  deletePipeline: (pipeline: Pipeline) => void;
+};
+
+function NewPipelinePage({ createPipeline }: NewPipelinePageProps) {
   const [formState, setFormState] = useState(INITIAL_STATE);
 
   const setTransformation = (
@@ -129,6 +138,12 @@ const NewPipelinePage = () => {
     });
   };
 
+  const savePipeline = () => {
+    console.log("SAVING PIPELINE", createPipeline);
+
+    createPipeline(formState);
+  };
+
   return (
     <Popup>
       <>
@@ -159,9 +174,11 @@ const NewPipelinePage = () => {
         ))}
         <br />
         <button onClick={addTransformation}>Add Transformation</button>
+
+        <button onClick={savePipeline}>Save Pipeline</button>
       </>
     </Popup>
   );
-};
+}
 
-export default NewPipelinePage;
+export default withRouter(withData(NewPipelinePage as any));

@@ -1,15 +1,13 @@
-interface PipelineExtractConfig {
+interface PipelineTransformations {
   from: number;
   to: string;
-}
-
-interface PipelineConfig {
-  table: string;
-  extractConfig: PipelineExtractConfig[];
+  match_on: boolean
 }
 
 export interface Pipeline {
   id: string;
   name: string;
-  configuration: PipelineConfig;
+  model: string;
+  table: string;
+  transformations: PipelineTransformations[];
 }

@@ -11,31 +11,8 @@ interface PipelineListProps {
   deletePipeline: (pipeline: Pipeline) => void;
 }
 
-function PipelineList({
-  pipelines,
-  createPipeline,
-  deletePipeline,
-}: PipelineListProps) {
+function PipelineList({ pipelines, deletePipeline }: PipelineListProps) {
   const [hover, setHover] = useState(false);
-
-  const createNewPipeline = () => {
-    createPipeline({
-      name: "Really Cool Pipeline",
-      configuration: {
-        table: `//id="table0"`,
-        extractConfig: [
-          {
-            from: 3,
-            to: "Patient",
-          },
-          {
-            from: 7,
-            to: "Patient",
-          },
-        ],
-      },
-    });
-  };
 
   const handleRemovePipeline = (pipeline) => {
     deletePipeline(pipeline);
@@ -91,7 +68,7 @@ function PipelineList({
       <div style={{ marginTop: "100px" }}>
         <Button
           appearance={"primary"}
-          onClick={() => createNewPipeline()}
+          onClick={() => navigate(router, "/pipeline/new")}
           style={{
             width: "100%",
             height: "100%",

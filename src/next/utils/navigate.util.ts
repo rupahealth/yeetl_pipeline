@@ -3,7 +3,7 @@ import queryString from "query-string";
 
 export function navigate(
   router: SingletonRouter,
-  path: "/" | "/results" | "/editor",
+  path: "/" | "/results" | "/editor" | "/pipeline/new",
   query?: any
 ) {
   const { from } = router.query;
