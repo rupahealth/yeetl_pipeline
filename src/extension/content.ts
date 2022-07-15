@@ -10,41 +10,15 @@ insertStyle();
 const popup: HTMLIFrameElement = insertPopup();
 
 browser.runtime.onMessage.addListener(({ subject, path }: any) => {
+  console.log("received message", { subject })
+
   switch (subject) {
-    case "open-popup": {
-      openPopup();
-      break;
-    }
-    case "close-popup": {
-      if (isPopup()) {
-        removePopup();
-      }
-
-      break;
+    case "toggle-popup": {
+      console.log("calling togglePopup()")
+      togglePopup()
+      break
     }
 
-    case "open-repo-or-file": {
-      const matches = window.location.href.match(
-        /^https:\/\/github.com\/([^/]*\/[^/]*)/
-      );
-      const repo = matches[1];
-
-      if (isFilePage()) {
-        const branch = getBranch();
-        const file = window.location.href.split(branch)[1];
-        browser.runtime.sendMessage({ subject: "open-file", repo, file });
-      } else {
-        browser.runtime.sendMessage({ subject: "open-repo", repo });
-      }
-
-      break;
-    }
-  }
-});
-
-document.addEventListener("click", () => {
-  if (isPopup()) {
-    removePopup();
   }
 });
 
@@ -168,21 +142,6 @@ function pathFromFileRow(row: HTMLTableRowElement): string {
   return href.split(branch)[1];
 }
 
-function openPopup() {
-  popup.className = "open";
-}
-
-function removePopup() {
-  const matches = window.location.href.match(
-    /^https:\/\/github.com\/([^/]*\/[^/]*)/
-  );
-  const repo = matches[1];
-
-  popup.className = "";
-  popup.src = browser.extension.getURL(
-    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
-  );
-}
 
 function isPopup(): boolean {
   return popup.className === "open";
@@ -190,14 +149,8 @@ function isPopup(): boolean {
 
 function insertPopup(): HTMLIFrameElement {
   const popup = document.createElement("iframe");
-
-  const matches = window.location.href.match(
-    /^https:\/\/github.com\/([^/]*\/[^/]*)/
-  );
-  const repo = matches[1];
-
   popup.src = browser.extension.getURL(
-    `next/out/index.html?intent=create-repo&name=${repo}&from=tab`
+    `next/out/index.html`
   );
   popup.id = "gh-code-popup";
 
@@ -229,4 +182,12 @@ function insertStyle() {
   `;
 
   document.head.appendChild(style);
+}
+
+function togglePopup() {
+  if (popup.classList.contains("open")) {
+    popup.classList.remove("open")
+  } else {
+    popup.classList.add("open")
+  }
 }

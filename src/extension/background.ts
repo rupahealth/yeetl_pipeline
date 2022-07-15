@@ -26,19 +26,9 @@ loadData();
 
 browser.commands.onCommand.addListener(async (command: string) => {
   switch (command) {
-    case "open-repo-or-file": {
-      if (!DATA.settings.keyboard.enabled) {
-        return;
-      }
-
-      const tab = (await browser.tabs.query({
-        active: true,
-        currentWindow: true
-      }))[0];
-
-      browser.tabs.sendMessage(tab.id, { subject: "open-repo-or-file" });
-      break;
-    }
+    case "toggle-popup":
+      togglePopup()
+      break
   }
 });
 
@@ -224,8 +214,7 @@ function queryString(data: { [key: string]: string }): string {
 
 function openPopup(data: any, tab: browser.tabs.Tab) {
   const path = browser.extension.getURL("next/out/index.html");
-  const query = queryString(data);
-  const popup = encodeURI(`${path}${query}`);
+  const popup = encodeURI(`${path}`);
 
   if (isFirefox()) {
     browser.browserAction.setPopup({ tabId: tab.id, popup });

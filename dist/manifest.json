@@ -13,15 +13,31 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.github.com/*"],
-      "js": ["./common/utils/polyfill.util.js", "./extension/content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "./common/utils/polyfill.util.js",
+        "./extension/content.js"
+      ]
     }
   ],
-  "permissions": ["activeTab", "contextMenus", "storage", "tabs", "<all_urls>"],
-
-  "web_accessible_resources": ["icons/yeetl-logo.png", "next/out/*"],
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "tabs",
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    "icons/yeetl-logo.png",
+    "next/out/*"
+  ],
   "background": {
-    "scripts": ["./common/utils/polyfill.util.js", "./extension/background.js"]
+    "scripts": [
+      "./common/utils/polyfill.util.js",
+      "./extension/background.js"
+    ]
   },
   "browser_action": {
     "default_icon": "icons/yeetl-logo.png",

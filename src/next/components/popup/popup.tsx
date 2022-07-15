@@ -16,7 +16,9 @@ export class Popup extends Component<PopupProps> {
     const fromTab = window.location.href.match(/from=tab/);
 
     if (!fromTab) {
-      browser.runtime.sendMessage({ subject: "close-popup" });
+      browser.runtime.sendMessage({
+        subject: "close-popup from " + window.location.href,
+      });
     }
   }
 
