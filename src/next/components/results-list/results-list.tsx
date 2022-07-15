@@ -53,7 +53,9 @@ export default function PipelineList({
                 <div>{record.patientName}</div>
                 <div>{record.date}</div>
                 <div style={{ width: "33%" }}>
-                  <a href={record.orderLink}>Link to Order</a>
+                  <a href={record.orderLink} target="_blank">
+                    Link to Order
+                  </a>
                 </div>
               </div>
             ))

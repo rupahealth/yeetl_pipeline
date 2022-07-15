@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Pane, Button } from "evergreen-ui";
 import { Pipeline } from "../../../common/interfaces/pipeline.interface";
+import { navigate } from "../../utils/navigate.util";
+import router from "next/router";
 
 interface PipelineEditorProps {
   pipeline: Pipeline;
@@ -106,6 +108,7 @@ function PipelineEditor({ pipeline }: PipelineEditorProps) {
             "font-size": "16px",
           }}
           disabled={!data.length}
+          onClick={() => navigate(router, "/results")}
         >
           Submit to Django
         </Button>
