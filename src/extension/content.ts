@@ -10,15 +10,14 @@ insertStyle();
 const popup: HTMLIFrameElement = insertPopup();
 
 browser.runtime.onMessage.addListener(({ subject, path }: any) => {
-  console.log("received message", { subject })
+  console.log("received message", { subject });
 
   switch (subject) {
     case "toggle-popup": {
-      console.log("calling togglePopup()")
-      togglePopup()
-      break
+      console.log("calling togglePopup()");
+      togglePopup();
+      break;
     }
-
   }
 });
 
@@ -100,10 +99,7 @@ function getPathFromInlineCode(element: HTMLElement) {
       const anchor = code.querySelector(".lh-condensed a");
 
       if (anchor) {
-        return anchor.innerHTML
-          .split("/")
-          .splice(1)
-          .join("/");
+        return anchor.innerHTML.split("/").splice(1).join("/");
       }
 
       break;
@@ -142,16 +138,13 @@ function pathFromFileRow(row: HTMLTableRowElement): string {
   return href.split(branch)[1];
 }
 
-
 function isPopup(): boolean {
   return popup.className === "open";
 }
 
 function insertPopup(): HTMLIFrameElement {
   const popup = document.createElement("iframe");
-  popup.src = browser.extension.getURL(
-    `next/out/index.html`
-  );
+  popup.src = browser.extension.getURL(`next/out/index.html`);
   popup.id = "gh-code-popup";
 
   document.body.appendChild(popup);
@@ -177,7 +170,7 @@ function insertStyle() {
 
     #gh-code-popup.open {
       height: 400px;
-      width: 327px;
+      width: 500px;
     }
   `;
 
@@ -186,8 +179,8 @@ function insertStyle() {
 
 function togglePopup() {
   if (popup.classList.contains("open")) {
-    popup.classList.remove("open")
+    popup.classList.remove("open");
   } else {
-    popup.classList.add("open")
+    popup.classList.add("open");
   }
 }

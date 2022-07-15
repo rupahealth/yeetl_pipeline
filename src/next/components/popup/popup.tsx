@@ -41,7 +41,7 @@ export class Popup extends Component<PopupProps> {
         <DataProvider>
           <Pane
             height={400}
-            width={650}
+            width={500}
             overflowX={"hidden"}
             display={"flex"}
             alignItems={"vertical"}
