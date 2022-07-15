@@ -83,6 +83,19 @@ function PipelineList({ pipelines, deletePipeline }: PipelineListProps) {
         >
           Create Pipeline
         </Button>
+        <Button
+          appearance={"secondary"}
+          onClick={() => navigate(router, "/results")}
+          style={{
+            width: "100%",
+            height: "100%",
+            "text-align": "center",
+            display: "block",
+            "font-size": "16px",
+          }}
+        >
+          Navigate to Results
+        </Button>
       </div>
     </Pane>
   );
