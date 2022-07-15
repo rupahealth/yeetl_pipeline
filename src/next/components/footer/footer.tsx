@@ -15,10 +15,7 @@ import { SingletonRouter, withRouter } from "next/router";
 import { navigate } from "../../utils/navigate.util";
 import { withData } from "../../hocs/with-data";
 
-interface FooterProps {
-  footer?: string;
-  router: SingletonRouter;
-}
+interface FooterProps {}
 
 class Footer extends Component<FooterProps> {
   constructor(props: FooterProps) {
@@ -27,51 +24,52 @@ class Footer extends Component<FooterProps> {
   }
 
   render() {
-    const { footer, router } = this.props;
-    const inSettings = router.pathname === "/settings";
+    return <></>;
+    // const { footer } = this.props;
+    // const inSettings = router.pathname === "/settings";
 
-    console.log(router.pathname);
+    // console.log(router.pathname);
 
-    return (
-      <Pane
-        alignItems={"center"}
-        alignSelf={"flex-end"}
-        background={"tint2"}
-        display={"flex"}
-        flexShrink={0}
-        justifyContent={"center"}
-        height={50}
-        width={"100%"}
-        borderTop={"1px solid #EDF0F2"}
-      >
-        {/* <Button
-          appearance={"primary"}
-          onClick={() => router.push("/pipeline/new")}
-          style={{
-            width: "100%",
-            height: "100%",
-            "text-align": "center",
-            display: "block",
-            "font-size": "16px",
-          }}
-        >
-          Create New Pipeline
-        </Button> */}
-        <Button
-          appearance={"primary"}
-          onClick={() => navigate(router, "/editor")}
-          style={{
-            width: "100%",
-            height: "100%",
-            "text-align": "center",
-            display: "block",
-            "font-size": "16px",
-          }}
-        >
-          Pipeline Editor
-        </Button>
-      </Pane>
-    );
+    // return (
+    //   <Pane
+    //     alignItems={"center"}
+    //     alignSelf={"flex-end"}
+    //     background={"tint2"}
+    //     display={"flex"}
+    //     flexShrink={0}
+    //     justifyContent={"center"}
+    //     height={50}
+    //     width={"100%"}
+    //     borderTop={"1px solid #EDF0F2"}
+    //   >
+    //     {/* <Button
+    //       appearance={"primary"}
+    //       onClick={() => router.push("/pipeline/new")}
+    //       style={{
+    //         width: "100%",
+    //         height: "100%",
+    //         "text-align": "center",
+    //         display: "block",
+    //         "font-size": "16px",
+    //       }}
+    //     >
+    //       Create New Pipeline
+    //     </Button> */}
+    //     <Button
+    //       appearance={"primary"}
+    //       onClick={() => navigate(router, "/editor")}
+    //       style={{
+    //         width: "100%",
+    //         height: "100%",
+    //         "text-align": "center",
+    //         display: "block",
+    //         "font-size": "16px",
+    //       }}
+    //     >
+    //       Pipeline Editor
+    //     </Button>
+    //   </Pane>
+    // );
   }
 }
 

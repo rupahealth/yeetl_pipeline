@@ -7,7 +7,6 @@ import { withData } from "../../hocs/with-data";
 
 interface PipelineListProps {
   pipelines: Pipeline[];
-  createPipeline: (pipeline: Partial<Pipeline>) => void;
   deletePipeline: (pipeline: Pipeline) => void;
 }
 

@@ -30,6 +30,11 @@ export function navigate(
       );
       break;
     }
+
+    case "/pipeline/new": {
+      extensionPath = browser.extension.getURL("/next/out/new.html");
+      break;
+    }
   }
 
   extensionPath = extensionPath

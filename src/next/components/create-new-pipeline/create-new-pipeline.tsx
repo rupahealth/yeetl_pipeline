@@ -100,12 +100,11 @@ const ExtractTransformationRow = ({
   );
 };
 
-type NewPipelinePageProps = {
-  createPipeline: (pipeline: Partial<Pipeline>) => void;
-  deletePipeline: (pipeline: Pipeline) => void;
-};
+interface NewPipelineProps {
+  createPipeline?: (pipeline: Partial<Pipeline>) => void;
+}
 
-function NewPipelinePage({ createPipeline }: NewPipelinePageProps) {
+function NewPipeline({ createPipeline }: NewPipelineProps) {
   const [formState, setFormState] = useState(INITIAL_STATE);
 
   const setTransformation = (
@@ -145,40 +144,38 @@ function NewPipelinePage({ createPipeline }: NewPipelinePageProps) {
   };
 
   return (
-    <Popup>
-      <>
-        <div style={{ marginBottom: "10px" }}>
-          <strong>Model: </strong>
-          <input
-            value={formState.model}
-            onChange={(e) =>
-              setFormState({ ...formState, model: e.target.value })
-            }
-          ></input>
-        </div>
+    <>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Model: </strong>
+        <input
+          value={formState.model}
+          onChange={(e) =>
+            setFormState({ ...formState, model: e.target.value })
+          }
+        ></input>
+      </div>
 
-        <div style={{ marginBottom: "10px" }}>
-          <strong>Parent XPath: </strong>
-          <input value={formState.table}></input>
-        </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Parent XPath: </strong>
+        <input value={formState.table}></input>
+      </div>
 
-        {formState.transformations.map((transformation, idx) => (
-          <ExtractTransformationRow
-            transformation={transformation}
-            setTransformation={(transformation) =>
-              setTransformation(transformation, idx)
-            }
-            setParentXPath={setParentXPath}
-            key={idx}
-          />
-        ))}
-        <br />
-        <button onClick={addTransformation}>Add Transformation</button>
+      {formState.transformations.map((transformation, idx) => (
+        <ExtractTransformationRow
+          transformation={transformation}
+          setTransformation={(transformation) =>
+            setTransformation(transformation, idx)
+          }
+          setParentXPath={setParentXPath}
+          key={idx}
+        />
+      ))}
+      <br />
+      <button onClick={addTransformation}>Add Transformation</button>
 
-        <button onClick={savePipeline}>Save Pipeline</button>
-      </>
-    </Popup>
+      <button onClick={savePipeline}>Save Pipeline</button>
+    </>
   );
 }
 
-export default withRouter(withData(NewPipelinePage as any));
+export default withRouter(withData(NewPipeline));
