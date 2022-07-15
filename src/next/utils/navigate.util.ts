@@ -3,7 +3,7 @@ import queryString from "query-string";
 
 export function navigate(
   router: SingletonRouter,
-  path: "/settings" | "/details" | "/",
+  path: "/" | "/results" | "/editor",
   query?: any
 ) {
   const { from } = router.query;
@@ -19,13 +19,15 @@ export function navigate(
       break;
     }
 
-    case "/details": {
-      extensionPath = browser.extension.getURL("/next/out/details.html");
+    case "/results": {
+      extensionPath = browser.extension.getURL("/next/out/results.html");
       break;
     }
 
-    case "/settings": {
-      extensionPath = browser.extension.getURL("/next/out/settings.html");
+    case "/editor": {
+      extensionPath = browser.extension.getURL(
+        "/next/out/pipeline-editor.html"
+      );
       break;
     }
   }

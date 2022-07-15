@@ -1,27 +1,57 @@
 import { useState } from "react";
-import { Pane } from "evergreen-ui";
+import { Pane, Button } from "evergreen-ui";
 import { Pipeline } from "../../../common/interfaces/pipeline.interface";
+import { navigate } from "../../utils/navigate.util";
+import router, { withRouter } from "next/router";
+import { withData } from "../../hocs/with-data";
 
 interface PipelineListProps {
   pipelines: Pipeline[];
+  createPipeline: (pipeline: Partial<Pipeline>) => void;
+  deletePipeline: (pipeline: Pipeline) => void;
 }
 
-export default function PipelineList({ pipelines }: PipelineListProps) {
+function PipelineList({
+  pipelines,
+  createPipeline,
+  deletePipeline,
+}: PipelineListProps) {
   const [hover, setHover] = useState(false);
+
+  const createNewPipeline = () => {
+    createPipeline({
+      name: "Really Cool Pipeline",
+      configuration: {
+        table: `//id="table0"`,
+        extractConfig: [
+          {
+            from: 3,
+            to: "Patient",
+          },
+          {
+            from: 7,
+            to: "Patient",
+          },
+        ],
+      },
+    });
+  };
+
+  const handleRemovePipeline = (pipeline) => {
+    deletePipeline(pipeline);
+  };
 
   return (
     <Pane
       alignItems={"left"}
-      alignSelf={"flex-end"}
       color={"#000"}
-      display={"flex"}
-      flexShrink={0}
       width={"100%"}
       borderBottom={"1px solid #EDF0F2"}
       fontSize={"16px"}
       marginTop={"10px"}
       paddingBottom={"10px"}
       paddingLeft={"15px"}
+      paddingRight={"15px"}
     >
       {pipelines.length
         ? pipelines.map((pipeline) => (
@@ -51,13 +81,43 @@ export default function PipelineList({ pipelines }: PipelineListProps) {
                   marginLeft: "auto",
                   paddingRight: "15px",
                 }}
-                onClick={() => console.log("Clicked")}
+                onClick={() => handleRemovePipeline(pipeline)}
               >
                 Remove
               </div>
             </div>
           ))
         : "No pipelines found"}
+      <div style={{ marginTop: "100px" }}>
+        <Button
+          appearance={"primary"}
+          onClick={() => createNewPipeline()}
+          style={{
+            width: "100%",
+            height: "100%",
+            "text-align": "center",
+            display: "block",
+            "font-size": "16px",
+          }}
+        >
+          Create Pipeline
+        </Button>
+        <Button
+          appearance={"secondary"}
+          onClick={() => navigate(router, "/editor")}
+          style={{
+            width: "100%",
+            height: "100%",
+            "text-align": "center",
+            display: "block",
+            "font-size": "16px",
+          }}
+        >
+          Go to Pipeline Editor
+        </Button>
+      </div>
     </Pane>
   );
 }
+
+export default withRouter(withData(PipelineList));
