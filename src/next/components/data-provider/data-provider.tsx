@@ -3,6 +3,7 @@ import { autoBind } from "react-extras";
 import { ulid } from "ulid";
 
 import { Data, Settings } from "../../../common/interfaces/data.interface";
+import { Pipeline } from "../../../common/interfaces/pipeline.interface";
 import { Repo } from "../../../common/interfaces/repo.interface";
 
 interface DataProviderProps {
@@ -11,29 +12,20 @@ interface DataProviderProps {
 
 interface DataProviderState extends Data {
   loaded: boolean;
-  footer: string;
 }
 
 const DEFAULT_STATE = {
-  repos: {},
-  settings: {
-    keyboard: {
-      enabled: false
-    }
-  },
   loaded: false,
-  footer: null
+  pipelines: [],
 };
 
 const DataContext = React.createContext({
-  createRepo: async (_repo: Partial<Repo>) => null,
-  deleteRepo: (_repo: Repo) => null,
-  findRepo: (_id: string) => null,
-  updateRepo: (_repo: Repo) => null,
-  updateFooter: (_footer: string) => null,
+  createPipeline: (_pipeline: Partial<Pipeline>) => null,
+  deletePipeline: (_pipeline: Pipeline) => null,
+  findPipeline: (_id: string) => null,
+  updatePipeline: (_pipeline: Pipeline) => null,
   resetStorage: () => null,
-  updateSettings: (_settings: Settings) => null,
-  ...DEFAULT_STATE
+  ...DEFAULT_STATE,
 });
 
 class DataProvider extends Component<DataProviderProps, DataProviderState> {
@@ -46,13 +38,13 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
   }
 
   async componentDidMount() {
-    const { data } = ((await browser.storage.local.get("data")) as unknown) as {
+    const { data } = (await browser.storage.local.get("data")) as unknown as {
       data: Data;
     };
 
     if (!data) {
       await browser.storage.local.set({
-        data: DEFAULT_STATE
+        data: DEFAULT_STATE,
       });
 
       return this.setState({ loaded: true });
@@ -61,94 +53,87 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
     this.setState({ ...data, loaded: true });
   }
 
-  updateRepo(repo: Repo) {
-    const { settings } = this.state;
-    const repos = Object.assign(this.state.repos, { [repo.id]: repo });
+  updatePipeline(pipeline: Pipeline) {
+    const { pipelines } = this.state;
+    let updatedPipelines = [...pipelines];
+    updatedPipelines = updatedPipelines.map((p) => {
+      if (p.id === pipeline.id) {
+        return pipeline;
+      }
 
-    this.setState({ repos });
+      return p;
+    });
 
-    const data = { repos, settings } as any;
+    this.setState({ pipelines: updatedPipelines });
+
+    const data = { updatedPipelines } as any;
     browser.storage.local.set({ data });
   }
 
-  async createRepo(repo: Partial<Repo>): Promise<Repo> {
-    const { settings } = this.state;
+  createPipeline(pipeline: Partial<Pipeline>): Pipeline {
+    const { pipelines } = this.state;
     const id = ulid();
-    repo.id = id;
+    pipeline.id = id;
 
-    const repos = Object.assign(this.state.repos, {
-      [id]: repo
-    });
+    const newPipelines = [...pipelines];
+    newPipelines.push(pipeline as Pipeline);
 
-    this.setState({ repos });
+    this.setState({ pipelines: newPipelines });
 
-    const data = { repos, settings } as any;
-    await browser.storage.local.set({ data });
+    const data = { pipelines: newPipelines } as any;
+    browser.storage.local.set({ data });
 
-    return repo as Repo;
+    console.log(pipelines);
+
+    return pipeline as Pipeline;
   }
 
-  findRepo(id: string): Repo {
-    const { repos } = this.state;
+  findPipeline(id: string): Pipeline {
+    const { pipelines } = this.state;
 
     if (!id) {
       return null;
     }
 
-    return repos[id];
+    return pipelines.find((p) => p.id === id);
   }
 
-  deleteRepo({ id }: Repo) {
-    const { settings } = this.state;
-    const repos = Object.assign(this.state.repos, {});
+  deletePipeline({ id }: Pipeline) {
+    const { pipelines } = this.state;
+    const tempPipelines = [...pipelines];
 
-    delete repos[id];
+    const index = tempPipelines.findIndex((p) => p.id === id);
 
-    this.setState({ repos });
+    tempPipelines.splice(index, 1);
 
-    const data = { repos, settings } as any;
+    this.setState({ pipelines: tempPipelines });
+
+    const data = { pipelines: tempPipelines } as any;
     browser.storage.local.set({ data });
-  }
-
-  updateFooter(footer: string) {
-    this.setState({ footer });
   }
 
   async resetStorage() {
     await browser.storage.local.set({
-      data: DEFAULT_STATE
+      data: DEFAULT_STATE,
     });
 
-    return this.setState({ repos: {} });
-  }
-
-  async updateSettings(settings: Settings) {
-    const { repos } = this.state;
-
-    this.setState({ settings });
-
-    const data = { repos, settings } as any;
-    await browser.storage.local.set({ data });
+    return this.setState({ pipelines: [] });
   }
 
   render() {
     const { children } = this.props;
-    const { repos, loaded, footer, settings } = this.state;
+    const { pipelines, loaded } = this.state;
 
     return (
       <DataContext.Provider
         value={{
-          settings,
-          repos,
-          createRepo: this.createRepo,
-          deleteRepo: this.deleteRepo,
-          updateRepo: this.updateRepo,
-          findRepo: this.findRepo,
-          updateFooter: this.updateFooter,
+          pipelines,
+          createPipeline: this.createPipeline,
+          deletePipeline: this.deletePipeline,
+          updatePipeline: this.updatePipeline,
+          findPipeline: this.findPipeline,
           resetStorage: this.resetStorage,
-          updateSettings: this.updateSettings,
           loaded,
-          footer
         }}
       >
         {children}

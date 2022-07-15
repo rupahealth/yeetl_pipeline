@@ -54,11 +54,11 @@ export class Popup extends Component<PopupProps> {
               display={"flex"}
               alignItems={"vertical"}
               flexFlow={"column"}
-              minHeight={0}
+              height={400}
+              overflowY={"scroll"}
             >
               {children}
             </Pane>
-            <Footer />
           </Pane>
         </DataProvider>
       </Fragment>
