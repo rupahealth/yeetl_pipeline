@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Pane, Button } from "evergreen-ui";
 import { Pipeline } from "../../../common/interfaces/pipeline.interface";
 
@@ -6,7 +6,7 @@ interface PipelineEditorProps {
   pipeline: Pipeline;
 }
 
-export default function PipelineEditor({ pipeline }: PipelineEditorProps) {
+function PipelineEditor({ pipeline }: PipelineEditorProps) {
   const [data, setData] = useState([]);
 
   const handleDataClick = () => {
@@ -28,6 +28,10 @@ export default function PipelineEditor({ pipeline }: PipelineEditorProps) {
     setData(tempData);
   };
 
+  if (!pipeline) {
+    return <div>loading</div>;
+  }
+
   return (
     <Pane
       alignItems={"left"}
@@ -42,7 +46,7 @@ export default function PipelineEditor({ pipeline }: PipelineEditorProps) {
     >
       <div style={{ display: "flex", width: "100%" }}>
         <div>
-          <h3>Pipeline Name</h3>
+          <h3>{pipeline.name}</h3>
         </div>
         <div style={{ marginLeft: "auto", alignSelf: "center" }}>
           <Button>Record</Button>
@@ -80,3 +84,5 @@ export default function PipelineEditor({ pipeline }: PipelineEditorProps) {
     </Pane>
   );
 }
+
+export default PipelineEditor;

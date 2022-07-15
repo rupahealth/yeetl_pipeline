@@ -92,6 +92,11 @@ class DataProvider extends Component<DataProviderProps, DataProviderState> {
   findPipeline(id: string): Pipeline {
     const { pipelines } = this.state;
 
+    console.log(
+      pipelines,
+      pipelines.find((p) => p.id === id)
+    );
+
     if (!id) {
       return null;
     }

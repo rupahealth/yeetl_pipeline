@@ -1,8 +1,9 @@
-import { withRouter } from "next/router";
+import router, { withRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { Pipeline } from "../../../common/interfaces/pipeline.interface";
 import { Popup } from "../../components/popup";
 import { withData } from "../../hocs/with-data";
+import { navigate } from "../../utils/navigate.util";
 
 const INITIAL_STATE = {
   name: "New Pipeline",
@@ -101,7 +102,7 @@ const ExtractTransformationRow = ({
 };
 
 interface NewPipelineProps {
-  createPipeline?: (pipeline: Partial<Pipeline>) => void;
+  createPipeline?: (pipeline: Partial<Pipeline>) => Pipeline;
 }
 
 function NewPipeline({ createPipeline }: NewPipelineProps) {
@@ -139,8 +140,10 @@ function NewPipeline({ createPipeline }: NewPipelineProps) {
 
   const savePipeline = () => {
     console.log("SAVING PIPELINE", createPipeline);
-
-    createPipeline(formState);
+    const pipeline = createPipeline(formState);
+    navigate(router, "/pipeline-editor", {
+      pipeline: JSON.stringify(pipeline),
+    });
   };
 
   return (

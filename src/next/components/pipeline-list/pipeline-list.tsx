@@ -33,6 +33,11 @@ function PipelineList({ pipelines, deletePipeline }: PipelineListProps) {
         ? pipelines.map((pipeline) => (
             <div style={{ display: "flex", width: "100%" }}>
               <div
+                onClick={() =>
+                  navigate(router, "/pipeline-editor", {
+                    pipeline: JSON.stringify(pipeline),
+                  })
+                }
                 style={
                   hover
                     ? {
@@ -77,19 +82,6 @@ function PipelineList({ pipelines, deletePipeline }: PipelineListProps) {
           }}
         >
           Create Pipeline
-        </Button>
-        <Button
-          appearance={"secondary"}
-          onClick={() => navigate(router, "/editor")}
-          style={{
-            width: "100%",
-            height: "100%",
-            "text-align": "center",
-            display: "block",
-            "font-size": "16px",
-          }}
-        >
-          Go to Pipeline Editor
         </Button>
       </div>
     </Pane>
