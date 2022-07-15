@@ -9,6 +9,7 @@ interface PipelineConfig {
 }
 
 export interface Pipeline {
+  id: string;
   name: string;
   configuration: PipelineConfig;
 }
