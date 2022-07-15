@@ -14,65 +14,6 @@ export default function PipelineList({
 }: ResultsListsProps) {
   const [hover, setHover] = useState(false);
 
-  connectedRecords = [
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-      orderLink: "https://labs.rupahealth.com/admin/order",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-      orderLink: "https://labs.rupahealth.com/admin/order",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-      orderLink: "https://labs.rupahealth.com/admin/order",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-      orderLink: "https://labs.rupahealth.com/admin/order",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-      orderLink: "https://labs.rupahealth.com/admin/order",
-    },
-  ];
-
-  unmatchedRecords = [
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-    {
-      patientName: "Alexander Pearson",
-      date: "07/15/22",
-    },
-  ];
-
   const headers = {
     patientName: "Patient Full Name",
     date: "Received Date",
