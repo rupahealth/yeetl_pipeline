@@ -12,19 +12,19 @@ interface IndexState {
   name: string;
 }
 
-const query = (queryString: string) => {
-  var query = {} as any;
-  var pairs = (queryString[0] === "?"
-    ? queryString.substr(1)
-    : queryString
-  ).split("&");
+// const query = (queryString: string) => {
+//   var query = {} as any;
+//   var pairs = (queryString[0] === "?"
+//     ? queryString.substr(1)
+//     : queryString
+//   ).split("&");
 
-  for (var i = 0; i < pairs.length; i++) {
-    var pair = pairs[i].split("=");
-    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || "");
-  }
-  return query;
-};
+//   for (var i = 0; i < pairs.length; i++) {
+//     var pair = pairs[i].split("=");
+//     query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || "");
+//   }
+//   return query;
+// };
 
 export default class Index extends Component<any, IndexState> {
   constructor(props: any) {
@@ -33,7 +33,7 @@ export default class Index extends Component<any, IndexState> {
     this.state = {
       search: "",
       intent: null,
-      name: null
+      name: null,
     };
 
     autoBind(this);
@@ -42,29 +42,28 @@ export default class Index extends Component<any, IndexState> {
   searchInput: HTMLInputElement;
 
   componentDidMount() {
-    const { intent, name } = query(window.location.search);
-
-    this.setState({ intent, name });
+    // const { intent, name } = query(window.location.search);
+    // this.setState({ intent, name });
   }
 
-  onSearch(search: string) {
-    this.setState({ search });
-  }
+  // onSearch(search: string) {
+  //   this.setState({ search });
+  // }
 
-  clearSearch() {
-    this.onSearch("");
+  // clearSearch() {
+  //   this.onSearch("");
 
-    if (this.searchInput) {
-      this.searchInput.focus();
-    }
-  }
+  //   if (this.searchInput) {
+  //     this.searchInput.focus();
+  //   }
+  // }
 
   render() {
-    const { search, intent, name } = this.state;
+    // const { search, intent, name } = this.state;
 
     return (
       <Popup>
-        <CreateRepoButton
+        {/* <CreateRepoButton
           justModal={true}
           showInitially={intent === "create-repo"}
           defaultName={name}
@@ -76,7 +75,7 @@ export default class Index extends Component<any, IndexState> {
           value={search}
         />
 
-        <RepoList search={search} clearSearch={this.clearSearch} />
+        <RepoList search={search} clearSearch={this.clearSearch} /> */}
       </Popup>
     );
   }
