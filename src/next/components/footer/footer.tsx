@@ -7,12 +7,14 @@ import {
   Link,
   Icon,
   Tooltip,
-  Position
+  Position,
+  Button,
 } from "evergreen-ui";
 import { SingletonRouter, withRouter } from "next/router";
 
 import { navigate } from "../../utils/navigate.util";
 import { withData } from "../../hocs/with-data";
+import { CreateRepoButton } from "../create-repo-button";
 
 interface FooterProps {
   footer?: string;
@@ -33,8 +35,7 @@ class Footer extends Component<FooterProps> {
   openIssues() {
     browser.tabs.create({
       active: true,
-      url:
-        "https://github.com/maxchehab/gh-code/issues/new?assignees=maxchehab&labels=bug&template=bug_report.md&title="
+      url: "https://github.com/maxchehab/gh-code/issues/new?assignees=maxchehab&labels=bug&template=bug_report.md&title=",
     });
 
     window.close();
@@ -58,11 +59,11 @@ class Footer extends Component<FooterProps> {
         display={"flex"}
         flexShrink={0}
         justifyContent={"center"}
-        minHeight={30}
+        minHeight={50}
         width={"100%"}
         borderTop={"1px solid #EDF0F2"}
       >
-        <Choose>
+        {/* <Choose>
           <Choose.When condition={Boolean(footer)}>
             <Paragraph
               display={"flex"}
@@ -137,7 +138,20 @@ class Footer extends Component<FooterProps> {
               </button>
             </Pane>
           </Choose.Otherwise>
-        </Choose>
+        </Choose> */}
+        <Button
+          appearance={"primary"}
+          onClick={() => console.log("Clicked")}
+          style={{
+            width: "100%",
+            height: "100%",
+            "text-align": "center",
+            display: "block",
+            "font-size": "16px",
+          }}
+        >
+          Create New Pipeline
+        </Button>
       </Pane>
     );
   }

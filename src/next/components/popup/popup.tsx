@@ -4,6 +4,7 @@ import Head from "next/head";
 
 import { DataProvider } from "../data-provider";
 import { Footer } from "../footer";
+import { Header } from "../header";
 
 interface PopupProps {
   children: JSX.Element | JSX.Element[];
@@ -38,12 +39,13 @@ export class Popup extends Component<PopupProps> {
         <DataProvider>
           <Pane
             height={400}
-            width={325}
+            width={650}
             overflowX={"hidden"}
             display={"flex"}
             alignItems={"vertical"}
             flexFlow={"column"}
           >
+            <Header />
             <Pane
               {...this.props}
               flexGrow={1}
