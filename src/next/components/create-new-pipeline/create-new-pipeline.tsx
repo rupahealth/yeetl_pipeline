@@ -20,7 +20,9 @@ function useRecording<T = any>(handler: (data: T) => void) {
     const eventHandler = (event: MessageEvent) => {
       console.log("received message", event);
 
-      handler(event.data.data);
+      if (event.data.subject === "recording-result") {
+        handler(event.data.data);
+      }
     };
 
     window.addEventListener("message", eventHandler);
